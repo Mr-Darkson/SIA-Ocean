@@ -25,7 +25,7 @@ void fillOcean(OceanCell ocean[Y_SIZE][X_SIZE]) {
 	}
 	generatePlancton(ocean);
 	generateSharks(ocean);
-	generateFish(ocean);
+	//generateFish(ocean);
 }
 
 void printOcean(OceanCell ocean[Y_SIZE][X_SIZE]) {
@@ -133,7 +133,7 @@ void moveToTheNearestTarget(OceanCell ocean[Y_SIZE][X_SIZE], int curr_x, int cur
 					return;
 				}
 
-				if (y == curr_x && ocean[curr_y][curr_x + 1].alive <= target) {
+				if (y == curr_y && ocean[curr_y][curr_x + 1].alive <= target) {
 					updateCell(&ocean[curr_y][curr_x], &ocean[curr_y][curr_x + 1]);
 					return;
 				}
@@ -185,7 +185,7 @@ void moveToTheNearestTarget(OceanCell ocean[Y_SIZE][X_SIZE], int curr_x, int cur
 					return;
 				}
 
-				if (y == curr_x && ocean[curr_y][curr_x - 1].alive <= target) {
+				if (y == curr_y && ocean[curr_y][curr_x - 1].alive <= target) {
 					updateCell(&ocean[curr_y][curr_x], &ocean[curr_y][curr_x - 1]);
 					return;
 				}
@@ -197,5 +197,6 @@ void moveToTheNearestTarget(OceanCell ocean[Y_SIZE][X_SIZE], int curr_x, int cur
 		++radius;
 	}
 
+	if (hunter == target) return;
 	moveToTheNearestTarget(ocean, curr_x, curr_y, hunter, hunter);
 }

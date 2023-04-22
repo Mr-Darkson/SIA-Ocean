@@ -47,7 +47,7 @@ int main() {
 		printOcean(ocean);
 		updateOcean(ocean);
 		setcur(0, 0);
-		Sleep(500);
+		//Sleep(500);
 	}
 }
 	

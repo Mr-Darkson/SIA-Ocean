@@ -18,7 +18,7 @@
 #define FISH_SYMB '<'
 #define SHARK_SYMB '@'
 
-#define SHARK_HUNGER 20
+#define SHARK_HUNGER 200
 #define SHARK_LIFETIME 1000
 #define COUNT_SHARKS 10
 
