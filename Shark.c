@@ -16,9 +16,8 @@ void generateSharks(OceanCell ocean[Y_SIZE][X_SIZE]) {
 		}
 
 		ocean[y][x].alive = SHARK;
-		Shark shark;
-		shark.hunger = 0;
-		ocean[y][x].shark = shark;
+		ocean[y][x].shark.hunger = 0;
+		ocean[y][x].shark.lifeTime = 0;
 		ocean[y][x].symbol = SHARK_SYMB;
 	}
 }
