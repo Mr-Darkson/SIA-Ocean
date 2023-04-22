@@ -17,8 +17,10 @@ void generateFish(OceanCell ocean[Y_SIZE][X_SIZE]) {
 			continue;
 		}
 
+		ocean[y][x].fish.lifeTime = 0;
+		ocean[y][x].fish.hunger = 0;
 		ocean[y][x].symbol = FISH_SYMB; //chage cell symbol
-		ocean[y][x].alive = FISH_COUNT; // put fish in cell
+		ocean[y][x].alive = FISH; // put fish in cell
 	}
 }
 

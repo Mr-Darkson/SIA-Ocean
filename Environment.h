@@ -2,6 +2,7 @@
 #define ENVIRONMENT
 
 typedef struct Fish {
+	int hunger;
 	int lifeTime;
 } Fish;
 
@@ -11,18 +12,15 @@ typedef struct Plankton {
 
 typedef struct Shark {
 	int hunger;
+	int lifeTime;
 }Shark;
 
 typedef struct OceanCell {
 	int alive; //0 - null | 1 - plankton | 2 - fish | 3 - shark
 	char symbol;
-<<<<<<< HEAD
-	Plankton* plankton;
-	Fish* fish;
-=======
+	Fish fish;
 	Plankton plankton;
 	Shark shark;
->>>>>>> main
 }OceanCell;
 
 #endif 
