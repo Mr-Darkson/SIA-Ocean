@@ -8,14 +8,14 @@
 
 void generatePlancton(OceanCell ocean[Y_SIZE][X_SIZE]) {
 	srand(time(NULL));
-	for (int i = 0; i < PLANKTON_COUNT; i++) {
+	for (int i = 0; i < 1; i++) {
 		int x = rand() % X_SIZE;
 		int y = rand() % Y_SIZE;
 		/*if (ocean[y][x].symbol != ' ') {
 			i--;
 			continue;
 		}*/
-		ocean[y][x].symbol = '^'; //chage cell symbol
+		ocean[y][x].symbol = PLANKTON_SYMB; //chage cell symbol
 		ocean[y][x].alive = PLANKTON; // put fish in cell
 	}
 }
