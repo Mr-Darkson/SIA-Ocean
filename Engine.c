@@ -80,50 +80,116 @@ void checkFishStatus(OceanCell* cell) {
 }
 
 void moveToTheNearestTarget(OceanCell ocean[Y_SIZE][X_SIZE], int curr_x, int curr_y, int hunter, int target) {
-
+	
 	int radius = 1;
 
 	while (curr_x + radius < X_SIZE || curr_y + radius < Y_SIZE || curr_y - radius >= 0 || curr_x - radius >= 0) {
 
-		if (curr_x + radius < X_SIZE && ocean[curr_y][curr_x + radius].alive == target) {
-			updateCell(&ocean[curr_y][curr_x], &ocean[curr_y][curr_x + 1]);
-			return;
-		}
+		int x = curr_x - radius;
+		int y = curr_y - radius;
+		for (; x <= curr_x + radius; x++) {
+			if (x < 0 || x >= X_SIZE || y < 0) {
+				continue;
+			}
 
-		if (curr_x + radius < X_SIZE && curr_y + radius < Y_SIZE && ocean[curr_y + radius][curr_x + radius].alive == target) {
-			updateCell(&ocean[curr_y][curr_x], &ocean[curr_y + 1][curr_x + 1]);
-			return;
-		}
+			if (ocean[y][x].alive == target) {
 
-		if (curr_y + radius < Y_SIZE && ocean[curr_y + radius][curr_x].alive == target) {
-			updateCell(&ocean[curr_y][curr_x], &ocean[curr_y + 1][curr_x]);
-			return;
-		}
+				if (x < curr_x && ocean[curr_y - 1][curr_x - 1].alive <= target) {
+					updateCell(&ocean[curr_y][curr_x], &ocean[curr_y - 1][curr_x - 1]);
+					return;
+				}
 
-		if (curr_x - radius >= 0 && curr_y + radius < Y_SIZE && ocean[curr_y + radius][curr_x - radius].alive == target) {
-			updateCell(&ocean[curr_y][curr_x], &ocean[curr_y + 1][curr_x - 1]);
-			return;
-		}
+				if (x > curr_x && ocean[curr_y - 1][curr_x + 1].alive <= target) {
+					updateCell(&ocean[curr_y][curr_x], &ocean[curr_y - 1][curr_x + 1]);
+					return;
+				}
 
-		if (curr_x - radius >= 0 && ocean[curr_y][curr_x - radius].alive == target) {
-			updateCell(&ocean[curr_y][curr_x], &ocean[curr_y][curr_x - 1]);
-			return;
-		}
+				if (x == curr_x && ocean[curr_y - 1][curr_x].alive <= target) {
+					updateCell(&ocean[curr_y][curr_x], &ocean[curr_y - 1][curr_x]);
+					return;
+				}
+			}
 
-		if (curr_x - radius >= 0 && curr_y - radius >= 0 && ocean[curr_y - radius][curr_x - radius].alive == target) {
-			updateCell(&ocean[curr_y][curr_x], &ocean[curr_y - 1][curr_x - 1]);
-			return;
 		}
+		--x;
 
-		if (curr_y - radius >= 0 && ocean[curr_y - radius][curr_x].alive == target) {
-			updateCell(&ocean[curr_y][curr_x], &ocean[curr_y - 1][curr_x]);
-			return;
-		}
+		for (; y <= curr_y + radius; y++) {
+			if (y < 0 || y >= Y_SIZE || x >= X_SIZE) {
+				continue;
+			}
 
-		if (curr_x + radius < X_SIZE && curr_y - radius >= 0 && ocean[curr_y - radius][curr_x + radius].alive == target) {
-			updateCell(&ocean[curr_y][curr_x], &ocean[curr_y - 1][curr_x + 1]);
-			return;
+			if (ocean[y][x].alive == target) {
+
+				if (y < curr_y && ocean[curr_y - 1][curr_x + 1].alive <= target) {
+					updateCell(&ocean[curr_y][curr_x], &ocean[curr_y - 1][curr_x + 1]);
+					return;
+				}
+
+				if (y > curr_y && ocean[curr_y + 1][curr_x + 1].alive <= target) {
+					updateCell(&ocean[curr_y][curr_x], &ocean[curr_y + 1][curr_x + 1]);
+					return;
+				}
+
+				if (y == curr_x && ocean[curr_y][curr_x + 1].alive <= target) {
+					updateCell(&ocean[curr_y][curr_x], &ocean[curr_y][curr_x + 1]);
+					return;
+				}
+			}
+
 		}
+		--y;
+
+		for (; x >= curr_x - radius; x--) {
+			if (y >= Y_SIZE || x < 0 || x >= X_SIZE) {
+				continue;
+			}
+
+			if (ocean[y][x].alive == target) {
+
+				if (x < curr_x && ocean[curr_y + 1][curr_x - 1].alive <= target) {
+					updateCell(&ocean[curr_y][curr_x], &ocean[curr_y + 1][curr_x - 1]);
+					return;
+				}
+
+				if (x > curr_x && ocean[curr_y + 1][curr_x + 1].alive <= target) {
+					updateCell(&ocean[curr_y][curr_x], &ocean[curr_y + 1][curr_x + 1]);
+					return;
+				}
+
+				if (x == curr_x && ocean[curr_y + 1][curr_x].alive <= target) {
+					updateCell(&ocean[curr_y][curr_x], &ocean[curr_y + 1][curr_x]);
+					return;
+				}
+			}
+
+		}
+		++x;
+
+		for (; y >= curr_y - radius; y--) {
+			if (y < 0 || y >= Y_SIZE || x < 0) {
+				continue;
+			}
+
+			if (ocean[y][x].alive == target) {
+
+				if (y < curr_y && ocean[curr_y - 1][curr_x - 1].alive <= target) {
+					updateCell(&ocean[curr_y][curr_x], &ocean[curr_y - 1][curr_x - 1]);
+					return;
+				}
+
+				if (y > curr_y && ocean[curr_y + 1][curr_x - 1].alive <= target) {
+					updateCell(&ocean[curr_y][curr_x], &ocean[curr_y + 1][curr_x - 1]);
+					return;
+				}
+
+				if (y == curr_x && ocean[curr_y][curr_x - 1].alive <= target) {
+					updateCell(&ocean[curr_y][curr_x], &ocean[curr_y][curr_x - 1]);
+					return;
+				}
+			}
+
+		}
+		++y;
 
 		++radius;
 	}
