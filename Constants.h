@@ -14,9 +14,9 @@
 #define SHARK 3
 
 #define SHARK_SYMB '@'
-#define SHARK_HUNGER 20
-#define SHARK_LIFETIME 1000
-#define COUNT_SHARKS 10
+#define SHARK_HUNGER 100
+#define SHARK_LIFETIME 100
+#define COUNT_SHARKS 20
 
 #define SPACE ' '
 #endif
