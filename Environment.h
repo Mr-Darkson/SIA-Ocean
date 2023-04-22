@@ -7,6 +7,7 @@ typedef struct Plankton {
 
 typedef struct Shark {
 	int hunger;
+	int lifeTime;
 }Shark;
 
 typedef struct OceanCell {

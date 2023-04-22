@@ -18,7 +18,7 @@ void setcur(int x, int y) {
 void fillOcean(OceanCell ocean[Y_SIZE][X_SIZE]) {
 	for (int y = 0; y < Y_SIZE; y++) {
 		for (int x = 0; x < X_SIZE; x++) {
-			ocean[y][x].symbol = VOID;
+			ocean[y][x].symbol = SPACE;
 			ocean[y][x].alive = 0;
 		}
 	}
@@ -48,82 +48,78 @@ void setCursor(int state) {
 	SetConsoleCursorInfo(hConsole, &cursorInfo);
 }
 
-void moveToTheNearestTarget(OceanCell ocean[Y_SIZE][X_SIZE], int curr_x, int curr_y,
-	char hunterSymb, int hunter, int target) {
+void updateCell(int target, OceanCell* oldCell, OceanCell* newCell) {
+	if (oldCell->alive == SHARK) {
+		if (newCell->alive == target) {
+			oldCell->shark.hunger = 0;
+		}
+		else {
+			++oldCell->shark.hunger;
+		}
+		newCell->alive = SHARK;
+		newCell->symbol = SHARK_SYMB;
+		newCell->shark.hunger = oldCell->shark.hunger;
+		newCell->shark.lifeTime = oldCell->shark.lifeTime;
+		//*newCell = *oldCell;
+	}
+	oldCell->alive = EMPTY;
+	oldCell->symbol = SPACE;
+	//add fish
+}
+
+void checkFishStatus(OceanCell* cell) {
+	if (cell->alive == SHARK) {
+		if (cell->shark.hunger > SHARK_HUNGER || cell->shark.lifeTime > SHARK_LIFETIME) {
+			cell->alive = EMPTY;
+			cell->symbol = SPACE;
+		}
+	}
+	//add fish
+}
+
+void moveToTheNearestTarget(OceanCell ocean[Y_SIZE][X_SIZE], int curr_x, int curr_y, int hunter, int target) {
 
 	int radius = 1;
 
 	while (curr_x + radius < X_SIZE || curr_y + radius < Y_SIZE || curr_y - radius >= 0 || curr_x - radius >= 0) {
 
 		if (curr_x + radius < X_SIZE && ocean[curr_y][curr_x + radius].alive == target) {
-			ocean[curr_y][curr_x].alive = EMPTY;
-			ocean[curr_y][curr_x].symbol = VOID;
-
-			ocean[curr_y][curr_x + 1].alive = hunter;
-			ocean[curr_y][curr_x + 1].symbol = hunterSymb;
+			updateCell(target, &ocean[curr_y][curr_x], &ocean[curr_y][curr_x + 1]);
 			break;
 		}
 
 		if (curr_x + radius < X_SIZE && curr_y + radius < Y_SIZE && ocean[curr_y + radius][curr_x + radius].alive == target) {
-			ocean[curr_y][curr_x].alive = EMPTY;
-			ocean[curr_y][curr_x].symbol = VOID;
-
-			ocean[curr_y + 1][curr_x + 1].alive = hunter;
-			ocean[curr_y + 1][curr_x + 1].symbol = hunterSymb;
+			updateCell(target, &ocean[curr_y][curr_x], &ocean[curr_y + 1][curr_x + 1]);
 			break;
 		}
 
 		if (curr_y + radius < Y_SIZE && ocean[curr_y + radius][curr_x].alive == target) {
-			ocean[curr_y][curr_x].alive = EMPTY;
-			ocean[curr_y][curr_x].symbol = VOID;
-
-			ocean[curr_y + 1][curr_x].alive = hunter;
-			ocean[curr_y + 1][curr_x].symbol = hunterSymb;
+			updateCell(target, &ocean[curr_y][curr_x], &ocean[curr_y + 1][curr_x]);
 			break;
 		}
 
 		if (curr_x - radius >= 0 && curr_y + radius < Y_SIZE && ocean[curr_y + radius][curr_x - radius].alive == target) {
-			ocean[curr_y][curr_x].alive = EMPTY;
-			ocean[curr_y][curr_x].symbol = VOID;
-
-			ocean[curr_y + 1][curr_x - 1].alive = hunter;
-			ocean[curr_y + 1][curr_x - 1].symbol = hunterSymb;
+			updateCell(target, &ocean[curr_y][curr_x], &ocean[curr_y + 1][curr_x - 1]);
 			break;
 		}
 
 		if (curr_x - radius >= 0 && ocean[curr_y][curr_x - radius].alive == target) {
-			ocean[curr_y][curr_x].alive = EMPTY;
-			ocean[curr_y][curr_x].symbol = VOID;
-
-			ocean[curr_y][curr_x - 1].alive = hunter;
-			ocean[curr_y][curr_x - 1].symbol = hunterSymb;
+			updateCell(target, &ocean[curr_y][curr_x], &ocean[curr_y][curr_x - 1]);
 			break;
 		}
 
 		if (curr_x - radius >= 0 && curr_y - radius >= 0 && ocean[curr_y - radius][curr_x - radius].alive == target) {
-			ocean[curr_y][curr_x].alive = EMPTY;
-			ocean[curr_y][curr_x].symbol = VOID;
-
-			ocean[curr_y - 1][curr_x - 1].alive = hunter;
-			ocean[curr_y - 1][curr_x - 1].symbol = hunterSymb;
+			updateCell(target, &ocean[curr_y][curr_x], &ocean[curr_y - 1][curr_x - 1]);
 			break;
 		}
 
 		if (curr_y - radius >= 0 && ocean[curr_y - radius][curr_x].alive == target) {
-			ocean[curr_y][curr_x].alive = EMPTY;
-			ocean[curr_y][curr_x].symbol = VOID;
-
-			ocean[curr_y - 1][curr_x].alive = hunter;
-			ocean[curr_y - 1][curr_x].symbol = hunterSymb;
+			updateCell(target, &ocean[curr_y][curr_x], &ocean[curr_y - 1][curr_x]);
 			break;
 		}
 
 		if (curr_x + radius < X_SIZE && curr_y - radius >= 0 && ocean[curr_y - radius][curr_x + radius].alive == target) {
-			ocean[curr_y][curr_x].alive = EMPTY;
-			ocean[curr_y][curr_x].symbol = VOID;
-
-			ocean[curr_y - 1][curr_x + 1].alive = hunter;
-			ocean[curr_y - 1][curr_x + 1].symbol = hunterSymb;
+			updateCell(target, &ocean[curr_y][curr_x], &ocean[curr_y - 1][curr_x + 1]);
 			break;
 		}
 
