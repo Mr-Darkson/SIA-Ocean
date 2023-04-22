@@ -7,6 +7,8 @@
 #include "Environment.h"
 
 void printOcean(OceanCell [Y_SIZE][X_SIZE]);
+void generatePlancton(OceanCell[Y_SIZE][X_SIZE]);
+void generateFish(OceanCell[Y_SIZE][X_SIZE]);
 void fillOcean(OceanCell [Y_SIZE][X_SIZE]);
 void moveToTheNearestTarget(OceanCell[Y_SIZE][X_SIZE], int, int, int, int);
 void setcur(int, int);
@@ -26,12 +28,17 @@ void updateOcean(OceanCell ocean[Y_SIZE][X_SIZE]) {
 
 			checkFishStatus(&ocean[i][j]);
 
-			if (ocean[i][j].alive == SHARK) { //add fish
-				moveToTheNearestTarget(ocean, j, i, SHARK, PLANKTON);
+			if (ocean[i][j].alive == SHARK) { 
+				moveToTheNearestTarget(ocean, j, i, SHARK, FISH);
 				++ocean[i][j].shark.lifeTime;
 				continue;
 			}
 
+			if (ocean[i][j].alive == FISH) {
+				moveToTheNearestTarget(ocean, j, i, FISH, PLANKTON);
+				++ocean[i][j].fish.lifeTime;
+				continue;
+			}
 		}
 	}
 }
@@ -45,7 +52,7 @@ int main() {
 		printOcean(ocean);
 		updateOcean(ocean);
 		setcur(0, 0);
-		//Sleep(500);
+		Sleep(300);
 	}
 }
 	

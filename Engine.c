@@ -7,6 +7,7 @@
 
 void generatePlancton(OceanCell[Y_SIZE][X_SIZE]);
 void generateSharks(OceanCell[Y_SIZE][X_SIZE]);
+void generateFish(OceanCell ocean[Y_SIZE][X_SIZE]);
 
 void setcur(int x, int y) {
 	COORD coord;
@@ -24,14 +25,28 @@ void fillOcean(OceanCell ocean[Y_SIZE][X_SIZE]) {
 	}
 	generatePlancton(ocean);
 	generateSharks(ocean);
+	generateFish(ocean);
 }
 
 void printOcean(OceanCell ocean[Y_SIZE][X_SIZE]) {
 	for (int y = 0; y < Y_SIZE; y++) {
 		for (int x = 0; x < X_SIZE; x++) {
+			if (ocean[y][x].alive == EMPTY) {
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_RED);
+			}
+			if (ocean[y][x].alive == PLANKTON) {
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_GREEN);
+			}
+			if (ocean[y][x].alive == FISH) {
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_BLUE);
+			}
+			if (ocean[y][x].alive == SHARK) {
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED);
+			}
 			printf("%c", ocean[y][x].symbol);
 			ocean[y][x].isChecked = 0;
 		}
+
 		printf("\n");
 	}
 }
@@ -50,6 +65,7 @@ void setCursor(int state) {
 }
 
 void updateCell(OceanCell* oldCell, OceanCell* newCell) {
+
 	if (oldCell->alive == SHARK) {
 		if (newCell->alive >= FISH) {
 			oldCell->shark.hunger = 0;
@@ -62,11 +78,23 @@ void updateCell(OceanCell* oldCell, OceanCell* newCell) {
 		newCell->symbol = SHARK_SYMB;
 		newCell->shark.hunger = oldCell->shark.hunger;
 		newCell->shark.lifeTime = oldCell->shark.lifeTime;
-		//*newCell = *oldCell;
+	}
+
+	if (oldCell->alive == FISH) {
+		if (newCell->alive == PLANKTON || newCell->alive == FISH) {
+			oldCell->fish.hunger = 0;
+		}
+		else {
+			++oldCell->fish.hunger;
+		}
+		newCell->alive = FISH;
+		newCell->isChecked = 1;
+		newCell->symbol = FISH_SYMB;
+		newCell->fish.hunger = oldCell->fish.hunger;
+		newCell->fish.lifeTime = oldCell->fish.lifeTime;
 	}
 	oldCell->alive = EMPTY;
 	oldCell->symbol = SPACE;
-	//add fish
 }
 
 void checkFishStatus(OceanCell* cell) {
@@ -76,7 +104,12 @@ void checkFishStatus(OceanCell* cell) {
 			cell->symbol = SPACE;
 		}
 	}
-	//add fish
+	if (cell->alive == FISH) {
+		if (cell->fish.hunger > FISH_HUNGER || cell->fish.lifeTime > FISH_LIFETIME) {
+			cell->alive = EMPTY;
+			cell->symbol = SPACE;
+		}
+	}
 }
 
 void moveToTheNearestTarget(OceanCell ocean[Y_SIZE][X_SIZE], int curr_x, int curr_y, int hunter, int target) {
