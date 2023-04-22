@@ -94,33 +94,6 @@ void moveToTheNearestTarget(OceanCell ocean[Y_SIZE][X_SIZE], int curr_x, int cur
 			if (x < 0 || x >= X_SIZE || y < 0) {
 				continue;
 			}
-<<<<<<< HEAD
-
-		}
-
-		for (; y <= curr_y + radius; y++) {
-			if (y < 0 || y >= Y_SIZE || x >= X_SIZE) {
-				continue;
-			}
-
-		}
-
-		for (; x >= curr_x - radius; x--) {
-			if (y >= Y_SIZE || x < 0 || x >= X_SIZE) {
-				continue;
-			}
-			
-		}
-
-		for (; y >= curr_y - radius; y--) {
-			if (y < 0 || y >= Y_SIZE || x < 0) {
-				continue;
-			}
-
-		}
-		++radius;
-	}
-=======
 
 			if (ocean[y][x].alive == target) {
 
@@ -225,5 +198,4 @@ void moveToTheNearestTarget(OceanCell ocean[Y_SIZE][X_SIZE], int curr_x, int cur
 	}
 
 	moveToTheNearestTarget(ocean, curr_x, curr_y, hunter, hunter);
->>>>>>> d7bd694d1f6737d1bdcf194c03a5535565118e34
 }
