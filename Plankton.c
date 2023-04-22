@@ -8,7 +8,7 @@
 
 void generatePlancton(OceanCell ocean[Y_SIZE][X_SIZE]) {
 	srand(time(NULL));
-	for (int i = 0; i < PLANKTON_COUNT; i++) {
+	for (int i = 0; i < 1; i++) {
 		int x = rand() % X_SIZE;
 		int y = rand() % Y_SIZE;
 		/*if (ocean[y][x].symbol != ' ') {
