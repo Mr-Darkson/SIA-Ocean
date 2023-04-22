@@ -19,4 +19,3 @@ void printOcean(OceanCell ocean[Y_SIZE][X_SIZE]) {
 		}
 		printf("\n");
 	}
-}

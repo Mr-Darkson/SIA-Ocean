@@ -12,4 +12,4 @@
 #define PLANKTON_SYMB '^'
 #define VOID ' '
 
-#endif // !CONSTANTS
+#endif

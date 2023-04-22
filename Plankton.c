@@ -20,4 +20,3 @@ void generatePlancton(OceanCell ocean[Y_SIZE][X_SIZE]) {
 	}
 }
 
-

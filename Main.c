@@ -1,3 +1,4 @@
+
 #define _CRT_SECURE_NO_WARNINGS
 #include <Windows.h>
 #include <stdio.h>
@@ -21,12 +22,5 @@ int main() {
 	printOcean(ocean);
 	//generateFish(ocean);
 	//generateShark(ocean);
-	
-	
-	//for (int day = 0; 1; ) {
-	//	
-	//	//sleep(1);
-
-	//}
-	
 }
+	
