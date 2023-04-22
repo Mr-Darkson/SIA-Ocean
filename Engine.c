@@ -54,7 +54,7 @@ void setCursor(int state) {
 
 void updateCell(OceanCell* oldCell, OceanCell* newCell) {
 	if (oldCell->alive == SHARK) {
-		if (newCell->alive != EMPTY) {
+		if (newCell->alive >= FISH) {
 			oldCell->shark.hunger = 0;
 		}
 		else {
