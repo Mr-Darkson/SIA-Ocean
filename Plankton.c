@@ -15,7 +15,7 @@ void generatePlancton(OceanCell ocean[Y_SIZE][X_SIZE]) {
 			i--;
 			continue;
 		}*/
-		ocean[y][x].symbol = '^'; //chage cell symbol
+		ocean[y][x].symbol = PLANKTON_SYMB; //chage cell symbol
 		ocean[y][x].alive = PLANKTON; // put fish in cell
 	}
 }

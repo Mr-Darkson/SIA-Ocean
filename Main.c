@@ -11,17 +11,18 @@
 void printOcean(OceanCell [Y_SIZE][X_SIZE]);
 void fillZero(OceanCell [Y_SIZE][X_SIZE]);
 void generatePlancton(OceanCell[Y_SIZE][X_SIZE]);
+void generateFish(OceanCell[Y_SIZE][X_SIZE]);
 
 
 int main() {
 	OceanCell ocean[Y_SIZE][X_SIZE];
 	fillZero(ocean);
 	generatePlancton(ocean);
+	generateFish(ocean);
 	printOcean(ocean);
-	//generateFish(ocean);
 	//generateShark(ocean);
 
-	for (int day = 1; 1; ) {
+	for (int day = 1; ; ) {
 
 	}
 }
