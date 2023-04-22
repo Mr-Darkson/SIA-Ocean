@@ -32,6 +32,7 @@ void printOcean(OceanCell ocean[Y_SIZE][X_SIZE]) {
 	for (int y = 0; y < Y_SIZE; y++) {
 		for (int x = 0; x < X_SIZE; x++) {
 			printf("%c", ocean[y][x].symbol);
+			ocean[y][x].isChecked = 0;
 		}
 
 		printf("\n");
@@ -51,15 +52,16 @@ void setCursor(int state) {
 	SetConsoleCursorInfo(hConsole, &cursorInfo);
 }
 
-void updateCell(int target, OceanCell* oldCell, OceanCell* newCell) {
+void updateCell(OceanCell* oldCell, OceanCell* newCell) {
 	if (oldCell->alive == SHARK) {
-		if (newCell->alive == target) {
+		if (newCell->alive != EMPTY) {
 			oldCell->shark.hunger = 0;
 		}
 		else {
 			++oldCell->shark.hunger;
 		}
 		newCell->alive = SHARK;
+		newCell->isChecked = 1;
 		newCell->symbol = SHARK_SYMB;
 		newCell->shark.hunger = oldCell->shark.hunger;
 		newCell->shark.lifeTime = oldCell->shark.lifeTime;
@@ -81,7 +83,7 @@ void checkFishStatus(OceanCell* cell) {
 }
 
 void moveToTheNearestTarget(OceanCell ocean[Y_SIZE][X_SIZE], int curr_x, int curr_y, int hunter, int target) {
-
+	
 	int radius = 1;
 
 	while (curr_x + radius < X_SIZE || curr_y + radius < Y_SIZE || curr_y - radius >= 0 || curr_x - radius >= 0) {
@@ -92,6 +94,7 @@ void moveToTheNearestTarget(OceanCell ocean[Y_SIZE][X_SIZE], int curr_x, int cur
 			if (x < 0 || x >= X_SIZE || y < 0) {
 				continue;
 			}
+<<<<<<< HEAD
 
 		}
 
@@ -117,4 +120,110 @@ void moveToTheNearestTarget(OceanCell ocean[Y_SIZE][X_SIZE], int curr_x, int cur
 		}
 		++radius;
 	}
+=======
+
+			if (ocean[y][x].alive == target) {
+
+				if (x < curr_x && ocean[curr_y - 1][curr_x - 1].alive <= target) {
+					updateCell(&ocean[curr_y][curr_x], &ocean[curr_y - 1][curr_x - 1]);
+					return;
+				}
+
+				if (x > curr_x && ocean[curr_y - 1][curr_x + 1].alive <= target) {
+					updateCell(&ocean[curr_y][curr_x], &ocean[curr_y - 1][curr_x + 1]);
+					return;
+				}
+
+				if (x == curr_x && ocean[curr_y - 1][curr_x].alive <= target) {
+					updateCell(&ocean[curr_y][curr_x], &ocean[curr_y - 1][curr_x]);
+					return;
+				}
+			}
+
+		}
+		--x;
+
+		for (; y <= curr_y + radius; y++) {
+			if (y < 0 || y >= Y_SIZE || x >= X_SIZE) {
+				continue;
+			}
+
+			if (ocean[y][x].alive == target) {
+
+				if (y < curr_y && ocean[curr_y - 1][curr_x + 1].alive <= target) {
+					updateCell(&ocean[curr_y][curr_x], &ocean[curr_y - 1][curr_x + 1]);
+					return;
+				}
+
+				if (y > curr_y && ocean[curr_y + 1][curr_x + 1].alive <= target) {
+					updateCell(&ocean[curr_y][curr_x], &ocean[curr_y + 1][curr_x + 1]);
+					return;
+				}
+
+				if (y == curr_x && ocean[curr_y][curr_x + 1].alive <= target) {
+					updateCell(&ocean[curr_y][curr_x], &ocean[curr_y][curr_x + 1]);
+					return;
+				}
+			}
+
+		}
+		--y;
+
+		for (; x >= curr_x - radius; x--) {
+			if (y >= Y_SIZE || x < 0 || x >= X_SIZE) {
+				continue;
+			}
+
+			if (ocean[y][x].alive == target) {
+
+				if (x < curr_x && ocean[curr_y + 1][curr_x - 1].alive <= target) {
+					updateCell(&ocean[curr_y][curr_x], &ocean[curr_y + 1][curr_x - 1]);
+					return;
+				}
+
+				if (x > curr_x && ocean[curr_y + 1][curr_x + 1].alive <= target) {
+					updateCell(&ocean[curr_y][curr_x], &ocean[curr_y + 1][curr_x + 1]);
+					return;
+				}
+
+				if (x == curr_x && ocean[curr_y + 1][curr_x].alive <= target) {
+					updateCell(&ocean[curr_y][curr_x], &ocean[curr_y + 1][curr_x]);
+					return;
+				}
+			}
+
+		}
+		++x;
+
+		for (; y >= curr_y - radius; y--) {
+			if (y < 0 || y >= Y_SIZE || x < 0) {
+				continue;
+			}
+
+			if (ocean[y][x].alive == target) {
+
+				if (y < curr_y && ocean[curr_y - 1][curr_x - 1].alive <= target) {
+					updateCell(&ocean[curr_y][curr_x], &ocean[curr_y - 1][curr_x - 1]);
+					return;
+				}
+
+				if (y > curr_y && ocean[curr_y + 1][curr_x - 1].alive <= target) {
+					updateCell(&ocean[curr_y][curr_x], &ocean[curr_y + 1][curr_x - 1]);
+					return;
+				}
+
+				if (y == curr_x && ocean[curr_y][curr_x - 1].alive <= target) {
+					updateCell(&ocean[curr_y][curr_x], &ocean[curr_y][curr_x - 1]);
+					return;
+				}
+			}
+
+		}
+		++y;
+
+		++radius;
+	}
+
+	moveToTheNearestTarget(ocean, curr_x, curr_y, hunter, hunter);
+>>>>>>> d7bd694d1f6737d1bdcf194c03a5535565118e34
 }

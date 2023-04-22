@@ -15,6 +15,29 @@ void setcur(int, int);
 void setCursor(int);
 void checkFishStatus(OceanCell*);
 
+void updateOcean(OceanCell ocean[Y_SIZE][X_SIZE]) {
+	for (int i = 0; i < Y_SIZE; ++i) {
+		for (int j = 0; j < X_SIZE; ++j) {
+			if (ocean[i][j].isChecked) continue;
+
+			if (ocean[i][j].alive == PLANKTON) {
+				++ocean[i][j].plankton.lifeTime;
+				ocean[i][j].isChecked = 1;
+				continue;
+			}
+
+			checkFishStatus(&ocean[i][j]);
+
+			if (ocean[i][j].alive == SHARK) { //add fish
+				moveToTheNearestTarget(ocean, j, i, SHARK, PLANKTON);
+				++ocean[i][j].shark.lifeTime;
+				continue;
+			}
+
+		}
+	}
+}
+
 int main() {
 	OceanCell ocean[Y_SIZE][X_SIZE];
 	fillOcean(ocean);
@@ -22,24 +45,7 @@ int main() {
 
 	for (int day = 1; 1; ) {
 		printOcean(ocean);
-		for (int i = 0; i < Y_SIZE; ++i) {
-			for (int j = 0; j < X_SIZE; ++j) {
-
-				if (ocean[i][j].alive == PLANKTON) {
-					++ocean[i][j].plankton.lifeTime;
-					continue;
-				}
-
-				checkFishStatus(&ocean[i][j]);
-
-				if (ocean[i][j].alive == SHARK) { //add fish
-					moveToTheNearestTarget(ocean, j, i, SHARK, PLANKTON);
-					++ocean[i][j].shark.lifeTime;
-					continue;
-				}
-
-			}
-		}
+		updateOcean(ocean);
 		setcur(0, 0);
 		Sleep(500);
 	}
