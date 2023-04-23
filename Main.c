@@ -8,6 +8,8 @@
 
 void printOcean(OceanCell [Y_SIZE][X_SIZE]);
 void generatePlancton(OceanCell[Y_SIZE][X_SIZE]);
+void traxPlancton(OceanCell ocean[X_SIZE][Y_SIZE], int x, int y);
+void diedPlankton(OceanCell ocean[X_SIZE][Y_SIZE], int x, int y);
 void generateFish(OceanCell[Y_SIZE][X_SIZE]);
 void fillOcean(OceanCell [Y_SIZE][X_SIZE]);
 void moveToTheNearestTarget(OceanCell[Y_SIZE][X_SIZE], int, int, int, int);
@@ -52,9 +54,8 @@ void updateOcean(OceanCell ocean[Y_SIZE][X_SIZE]) {
 int main() {
 	OceanCell ocean[Y_SIZE][X_SIZE];
 	fillOcean(ocean);
-	//setCursor(0);
 
-	for (int day = 1; 1; ) {
+	for (int day = 1; 1; day++) {
 		printOcean(ocean);
 		updateOcean(ocean);
 		setcur(0, 0);

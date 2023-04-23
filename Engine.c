@@ -120,6 +120,12 @@ void checkFishStatus(OceanCell* cell) {
 			cell->symbol = SPACE;
 		}
 	}
+	if (cell->alive == PLANKTON) {
+		if (cell->plankton.lifeTime > PLANKTON_LIFETIME) {
+			cell->alive = EMPTY;
+			cell->symbol = SPACE;
+		}
+	}
 }
 
 int makeMoveIfEmpty(OceanCell ocean[Y_SIZE][X_SIZE], int curr_x, int curr_y, int targ_x, int targ_y, int target) {
