@@ -8,7 +8,7 @@ typedef struct Plankton {
 typedef struct OceanCell {
 	int alive; //0 - null | 1 - plankton | 2 - fish | 3 - shark
 	char symbol;
-	Plankton* plankton;
+	Plankton plankton;
 }OceanCell;
 
 

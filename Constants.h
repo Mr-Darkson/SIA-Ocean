@@ -9,7 +9,7 @@
 #define PLANKTON 1
 #define FISH 2
 #define SHARK 3
-#define PLANKTON_SYMB '^'
+#define PLANKTON_SYMB '`'
 #define VOID ' '
 
 #endif

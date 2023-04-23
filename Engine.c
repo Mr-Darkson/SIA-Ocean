@@ -4,10 +4,12 @@
 #include "Constants.h"
 #include "Environment.h"
 
+
 void fillZero(OceanCell ocean[Y_SIZE][X_SIZE]) {
 	for (int y = 0; y < Y_SIZE; y++) {
 		for (int x = 0; x < X_SIZE; x++) {
 			ocean[y][x].symbol = VOID;
+			ocean[y][x].alive = 0;
 		}
 	}
 }
@@ -19,3 +21,4 @@ void printOcean(OceanCell ocean[Y_SIZE][X_SIZE]) {
 		}
 		printf("\n");
 	}
+}
