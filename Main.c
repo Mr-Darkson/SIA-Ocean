@@ -16,7 +16,7 @@ void moveToTheNearestTarget(OceanCell[Y_SIZE][X_SIZE], int, int, int, int);
 void setcur(int, int);
 void setCursor(int);
 void checkFishStatus(OceanCell*);
-void randomMovement(OceanCell[Y_SIZE][X_SIZE], int x, int y);
+void randomMovement(OceanCell[Y_SIZE][X_SIZE], int x, int y, int walker);
 void spawnAnimal(OceanCell[Y_SIZE][X_SIZE], int curr_x, int curr_y);
 
 void updateOcean(OceanCell ocean[Y_SIZE][X_SIZE]) {
@@ -29,20 +29,24 @@ void updateOcean(OceanCell ocean[Y_SIZE][X_SIZE]) {
 			if (ocean[i][j].alive == PLANKTON) {
 				++ocean[i][j].plankton.lifeTime;
 				spawnAnimal(ocean, j, i);
-				randomMovement(ocean, j, i);
+				randomMovement(ocean, j, i, PLANKTON);
 				ocean[i][j].isChecked = 1;
 				continue;
 			}
 
 			if (ocean[i][j].alive == SHARK) {
-				spawnAnimal(ocean, j, i);
+				if (ocean[i][j].fish.gaveBirth == 0) {
+					spawnAnimal(ocean, j, i);
+				}
 				moveToTheNearestTarget(ocean, j, i, SHARK, FISH);
 				++ocean[i][j].shark.lifeTime;
 				continue;
 			}
 
 			if (ocean[i][j].alive == FISH) {
-				spawnAnimal(ocean, j, i);
+				if (ocean[i][j].shark.gaveBirth == 0) {
+					spawnAnimal(ocean, j, i);
+				}
 				moveToTheNearestTarget(ocean, j, i, FISH, PLANKTON);
 				++ocean[i][j].fish.lifeTime;
 				continue;
