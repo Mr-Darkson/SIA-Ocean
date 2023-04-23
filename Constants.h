@@ -10,8 +10,9 @@
 
 #define PLANKTON 1
 #define PLANKTON_SYMB '`'
-#define PLANKTON_COUNT ((X_SIZE * Y_SIZE) / 100) * 10 //last number - %
 #define PLANKTON_LIFETIME 15
+
+#define PLANKTON_COUNT ((X_SIZE * Y_SIZE) / 100) * 50 //last number - %
 
 
 #define FISH 2
