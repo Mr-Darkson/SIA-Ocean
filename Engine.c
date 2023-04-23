@@ -32,13 +32,13 @@ void printOcean(OceanCell ocean[Y_SIZE][X_SIZE]) {
 	for (int y = 0; y < Y_SIZE; y++) {
 		for (int x = 0; x < X_SIZE; x++) {
 			if (ocean[y][x].alive == EMPTY) {
-				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_RED);
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_BLUE);
 			}
 			if (ocean[y][x].alive == PLANKTON) {
 				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_GREEN);
 			}
 			if (ocean[y][x].alive == FISH) {
-				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_BLUE);
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED | FOREGROUND_GREEN);
 			}
 			if (ocean[y][x].alive == SHARK) {
 				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED);
