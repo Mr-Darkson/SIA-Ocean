@@ -10,7 +10,7 @@
 
 #define PLANKTON 1
 #define PLANKTON_SYMB '`'
-#define PLANKTON_COUNT ((X_SIZE * Y_SIZE) / 100) * 15 //last number - %
+#define PLANKTON_COUNT ((X_SIZE * Y_SIZE) / 100) * 50 //last number - %
 
 #define FISH 2
 #define FISH_SYMB '<'
@@ -26,9 +26,9 @@
 #define SHARK_SYMB '@'
 #define SHARK_HUNGER 30
 #define SHARK_LIFETIME 100
-#define COUNT_SHARKS 10
+#define COUNT_SHARKS 1
 #define MATURE_SHARK_AGE 20
-#define CHANCE_SHARK_BORN_TWINS 40
+#define CHANCE_SHARK_BORN_TWINS 100
 #define CHANCE_SHARK_BORN_ONE 50
 
 
