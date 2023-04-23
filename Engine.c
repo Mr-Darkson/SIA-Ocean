@@ -1,7 +1,8 @@
 #define _CRT_SECURE_NO_WARNINGS
+#include <Windows.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <Windows.h>
+#include <math.h>
 #include "Constants.h"
 #include "Environment.h"
 
@@ -104,7 +105,7 @@ void checkFishStatus(OceanCell* cell) {
 			cell->symbol = SPACE;
 		}
 	}
-	if (cell->alive == FISH) {
+	else if (cell->alive == FISH) {
 		if (cell->fish.hunger > FISH_HUNGER || cell->fish.lifeTime > FISH_LIFETIME) {
 			cell->alive = EMPTY;
 			cell->symbol = SPACE;
