@@ -8,8 +8,6 @@
 
 void printOcean(OceanCell [Y_SIZE][X_SIZE]);
 void generatePlancton(OceanCell[Y_SIZE][X_SIZE]);
-void traxPlancton(OceanCell ocean[X_SIZE][Y_SIZE], int x, int y);
-void diedPlankton(OceanCell ocean[X_SIZE][Y_SIZE], int x, int y);
 void generateFish(OceanCell[Y_SIZE][X_SIZE]);
 void fillOcean(OceanCell [Y_SIZE][X_SIZE]);
 void moveToTheNearestTarget(OceanCell[Y_SIZE][X_SIZE], int, int, int, int);
@@ -35,20 +33,20 @@ void updateOcean(OceanCell ocean[Y_SIZE][X_SIZE]) {
 			}
 
 			if (ocean[i][j].alive == SHARK) {
-				if (ocean[i][j].fish.gaveBirth == 0) {
+				++ocean[i][j].shark.lifeTime;
+				if (ocean[i][j].shark.gaveBirth == 0) {
 					spawnAnimal(ocean, j, i);
 				}
 				moveToTheNearestTarget(ocean, j, i, SHARK, FISH);
-				++ocean[i][j].shark.lifeTime;
 				continue;
 			}
 
 			if (ocean[i][j].alive == FISH) {
-				if (ocean[i][j].shark.gaveBirth == 0) {
+				++ocean[i][j].fish.lifeTime;
+				if (ocean[i][j].fish.gaveBirth == 0) {
 					spawnAnimal(ocean, j, i);
 				}
 				moveToTheNearestTarget(ocean, j, i, FISH, PLANKTON);
-				++ocean[i][j].fish.lifeTime;
 				continue;
 			}
 		}
@@ -63,7 +61,7 @@ int main() {
 		printOcean(ocean);
 		updateOcean(ocean);
 		setcur(0, 0);
-		Sleep(500);
+		//Sleep(500);
 	}
 }
 	
