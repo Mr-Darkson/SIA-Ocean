@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include "Constants.h"
+#include <time.h>
 #include "Environment.h"
 
 void generatePlancton(OceanCell[Y_SIZE][X_SIZE]);
@@ -166,6 +167,7 @@ void addAnimalInOcean(OceanCell ocean[Y_SIZE][X_SIZE], int x, int y, int target)
 		ocean[y][x].alive = FISH;
 		ocean[y][x].fish.hunger = 0;
 		ocean[y][x].fish.lifeTime = 0;
+		ocean[y][x].fish.gaveBirth = 0;
 		ocean[y][x].symbol = FISH_SYMB;
 	}
 
@@ -173,6 +175,7 @@ void addAnimalInOcean(OceanCell ocean[Y_SIZE][X_SIZE], int x, int y, int target)
 		ocean[y][x].alive = SHARK;
 		ocean[y][x].shark.hunger = 0;
 		ocean[y][x].shark.lifeTime = 0;
+		ocean[y][x].shark.gaveBirth = 0;
 		ocean[y][x].symbol = SHARK_SYMB;
 	}
 
@@ -194,7 +197,8 @@ void spawnAnimal(OceanCell ocean[Y_SIZE][X_SIZE], int curr_x, int curr_y) {
 	}
 
 	if (ocean[curr_y][curr_x].alive == FISH) {
-		if (ocean[curr_y][curr_x].fish.lifeTime < MATURE_FISH_AGE) return;
+		if (ocean[curr_y][curr_x].fish.lifeTime < MATURE_FISH_AGE || ocean[curr_y][curr_x].fish.hunger >= FISH_BORN_HUNGER_LIMIT) 
+			return;
 		int bornChance = rand() % 100;
 		if (bornChance < CHANCE_FISH_BORN_FIVE) return;
 
@@ -237,7 +241,8 @@ void spawnAnimal(OceanCell ocean[Y_SIZE][X_SIZE], int curr_x, int curr_y) {
 	}
 
 	if (ocean[curr_y][curr_x].alive == SHARK) {
-		if (ocean[curr_y][curr_x].shark.lifeTime < MATURE_SHARK_AGE) return;
+		if (ocean[curr_y][curr_x].shark.lifeTime < MATURE_SHARK_AGE || ocean[curr_y][curr_x].shark.hunger >= SHARK_BORN_HUNGER_LIMIT) 
+			return;
 		int bornChance = rand() % 100;
 		if (bornChance < CHANCE_SHARK_BORN_TWINS) return;
 
@@ -287,8 +292,9 @@ int runFromHunter(OceanCell ocean[Y_SIZE][X_SIZE], int curr_x, int curr_y, int f
 void moveToTheNearestTarget(OceanCell ocean[Y_SIZE][X_SIZE], int curr_x, int curr_y, int hunter, int target) {
 	
 	int radius = 1;
+	int radius_limit = target == FISH ? FISH_VISION_RADIUS : SHARK_VISION_RADIUS;
 
-	while (curr_x + radius < X_SIZE || curr_y + radius < Y_SIZE || curr_y - radius >= 0 || curr_x - radius >= 0) {
+	while ((curr_x + radius < X_SIZE || curr_y + radius < Y_SIZE || curr_y - radius >= 0 || curr_x - radius >= 0) && radius <= radius_limit) {
 
 		for (int y = curr_y > radius ? curr_y - radius : 0; y <= curr_y + radius && y < Y_SIZE; y++) {
 			for (int x = curr_x > radius ? curr_x - radius : 0; x <= curr_x + radius && x < X_SIZE; x++) {
