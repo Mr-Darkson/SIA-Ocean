@@ -50,7 +50,6 @@ void updateOcean(OceanCell ocean[Y_SIZE][X_SIZE]) {
 int main() {
 	OceanCell ocean[Y_SIZE][X_SIZE];
 	fillOcean(ocean);
-	//setCursor(0);
 
 	for (int day = 1; 1; day++) {
 		printOcean(ocean);

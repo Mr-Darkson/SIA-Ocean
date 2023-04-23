@@ -2,20 +2,17 @@
 #define CONSTANTS
 
 
-#define X_SIZE 10
-#define Y_SIZE 10
+#define X_SIZE 100
+#define Y_SIZE 40
 
 #define EMPTY 0
 #define SPACE ' '
 
 #define PLANKTON 1
 #define PLANKTON_SYMB '`'
-<<<<<<< HEAD
 #define PLANKTON_COUNT ((X_SIZE * Y_SIZE) / 100) * 10 //last number - %
-#define PLANKTON_LIFETIME 5
-=======
-#define PLANKTON_COUNT ((X_SIZE * Y_SIZE) / 100) * 15 //last number - %
->>>>>>> 5f3e45f594fe8ddda7ba43ea73724b9a7889344a
+#define PLANKTON_LIFETIME 15
+
 
 #define FISH 2
 #define FISH_SYMB '<'

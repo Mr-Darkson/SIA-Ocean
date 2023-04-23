@@ -181,11 +181,6 @@ void moveToTheNearestTarget(OceanCell ocean[Y_SIZE][X_SIZE], int curr_x, int cur
 	}
 
 	if (hunter == target) return;
-<<<<<<< HEAD
-	moveToTheNearestTarget(ocean, curr_x, curr_y, hunter, hunter);
-}
-=======
 	//moveToTheNearestTarget(ocean, curr_x, curr_y, hunter, hunter);
 	randomMovement(ocean, curr_x, curr_y);
 }
->>>>>>> 5f3e45f594fe8ddda7ba43ea73724b9a7889344a
