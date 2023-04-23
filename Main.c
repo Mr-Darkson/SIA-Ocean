@@ -5,7 +5,6 @@
 #include < time.h >
 #include "Constants.h"
 #include "Environment.h"
-#include <conio.h>
 
 void printOcean(OceanCell [Y_SIZE][X_SIZE]);
 void generatePlancton(OceanCell[Y_SIZE][X_SIZE]);
@@ -53,7 +52,7 @@ int main() {
 		printOcean(ocean);
 		updateOcean(ocean);
 		setcur(0, 0);
-		Sleep(100);
+		Sleep(500);
 	}
 }
 	
