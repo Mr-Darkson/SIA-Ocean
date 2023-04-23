@@ -16,19 +16,21 @@ void moveToTheNearestTarget(OceanCell[Y_SIZE][X_SIZE], int, int, int, int);
 void setcur(int, int);
 void setCursor(int);
 void checkFishStatus(OceanCell*);
+void randomMovement(OceanCell[Y_SIZE][X_SIZE], int x, int y);
 
 void updateOcean(OceanCell ocean[Y_SIZE][X_SIZE]) {
 	for (int i = 0; i < Y_SIZE; ++i) {
 		for (int j = 0; j < X_SIZE; ++j) {
 			if (ocean[i][j].isChecked) continue;
 
+			checkFishStatus(&ocean[i][j]);
+
 			if (ocean[i][j].alive == PLANKTON) {
 				++ocean[i][j].plankton.lifeTime;
+				randomMovement(ocean, j, i);
 				ocean[i][j].isChecked = 1;
 				continue;
 			}
-
-			checkFishStatus(&ocean[i][j]);
 
 			if (ocean[i][j].alive == SHARK) { 
 				moveToTheNearestTarget(ocean, j, i, SHARK, FISH);
