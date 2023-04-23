@@ -52,12 +52,20 @@ void updateOcean(OceanCell ocean[Y_SIZE][X_SIZE]) {
 		}
 	}
 }
+void printtime(int day) {
+	setcur(X_SIZE + 1, Y_SIZE / 2);
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+	printf("Day: %d\n", day);
+	setcur(0, 0);
+	
+}
 
 int main() {
 	OceanCell ocean[Y_SIZE][X_SIZE];
 	fillOcean(ocean);
 
 	for (int day = 1; 1; day++) {
+		printtime(day);
 		printOcean(ocean);
 		updateOcean(ocean);
 		setcur(0, 0);
