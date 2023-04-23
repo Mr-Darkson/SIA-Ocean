@@ -94,6 +94,7 @@ void updateCell(OceanCell* oldCell, OceanCell* newCell) {
 		newCell->fish.hunger = oldCell->fish.hunger;
 		newCell->fish.lifeTime = oldCell->fish.lifeTime;
 	}
+
 	oldCell->alive = EMPTY;
 	oldCell->symbol = SPACE;
 }
@@ -136,7 +137,7 @@ void moveToTheNearestTarget(OceanCell ocean[Y_SIZE][X_SIZE], int curr_x, int cur
 
 		for (int y = curr_y > radius ? curr_y - radius : 0; y <= curr_y + radius && y < Y_SIZE; y++) {
 			for (int x = curr_x > radius ? curr_x - radius : 0; x <= curr_x + radius && x < X_SIZE; x++) {
-				if (abs(y - curr_y) != radius && abs(curr_x - x) != radius) {
+				if (abs(y - curr_y) != radius && abs(x - curr_x) != radius) {
 					x = curr_x + radius - 1;
 				}
 				else if (ocean[y][x].alive == target) {
