@@ -146,10 +146,28 @@ void randomMovement(OceanCell ocean[Y_SIZE][X_SIZE], int curr_x, int curr_y) {
 		int new_x = curr_x - 1 + rand() % 2;
 		int new_y = curr_y - 1 + rand() % 2;
 		if (new_x >= 0 && new_x <= X_SIZE && new_y >= 0 && new_y < Y_SIZE) {
+			if (ocean[new_y][new_x].alive <= PLANKTON)
 			updateCell(&ocean[curr_y][curr_x], &ocean[new_y][new_x]);
 			return;
 		}
 	}
+}
+
+int runFromHunter(OceanCell ocean[Y_SIZE][X_SIZE], int curr_x, int curr_y, int from_x, int from_y, int target) {
+	int y_diff = from_y - curr_y;
+	int x_diff = from_x - curr_x;
+	int next_y = curr_y - (y_diff / (abs(y_diff) ? abs(y_diff) : 1));
+	int next_x = curr_x - (x_diff / (abs(x_diff) ? abs(x_diff) : 1));
+
+	
+	if (next_x >= 0 && next_x <= X_SIZE && next_y >= 0 && next_y < Y_SIZE) {
+		if (ocean[next_y][next_x].alive <= target) {
+			updateCell(&ocean[curr_y][curr_x], &ocean[next_y][next_x]);
+			return 1;
+		}
+	}
+
+	return 0;
 }
 
 void moveToTheNearestTarget(OceanCell ocean[Y_SIZE][X_SIZE], int curr_x, int curr_y, int hunter, int target) {
@@ -162,6 +180,11 @@ void moveToTheNearestTarget(OceanCell ocean[Y_SIZE][X_SIZE], int curr_x, int cur
 			for (int x = curr_x > radius ? curr_x - radius : 0; x <= curr_x + radius && x < X_SIZE; x++) {
 				if (abs(y - curr_y) != radius && abs(curr_x - x) != radius) {
 					x = curr_x + radius - 1;
+				}
+				else if (ocean[y][x].alive > hunter) {
+					if (runFromHunter(ocean, curr_x, curr_y, x, y, target)) {
+						return;
+					}
 				}
 				else if (ocean[y][x].alive == target) {
 					if (makeMoveIfEmpty(ocean, curr_x, curr_y, x, y, target)) {
