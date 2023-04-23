@@ -94,18 +94,23 @@ void updateCell(OceanCell* oldCell, OceanCell* newCell) {
 		newCell->fish.hunger = oldCell->fish.hunger;
 		newCell->fish.lifeTime = oldCell->fish.lifeTime;
 	}
-
 	oldCell->alive = EMPTY;
 	oldCell->symbol = SPACE;
 }
 
 void checkFishStatus(OceanCell* cell) {
+
+	if (cell->alive == PLANKTON) {
+		
+	}
+
 	if (cell->alive == SHARK) {
 		if (cell->shark.hunger > SHARK_HUNGER || cell->shark.lifeTime > SHARK_LIFETIME) {
 			cell->alive = EMPTY;
 			cell->symbol = SPACE;
 		}
 	}
+
 	else if (cell->alive == FISH) {
 		if (cell->fish.hunger > FISH_HUNGER || cell->fish.lifeTime > FISH_LIFETIME) {
 			cell->alive = EMPTY;
@@ -129,6 +134,17 @@ int makeMoveIfEmpty(OceanCell ocean[Y_SIZE][X_SIZE], int curr_x, int curr_y, int
 	return 0;
 }
 
+void randomMovement(OceanCell ocean[Y_SIZE][X_SIZE], int curr_x, int curr_y) {
+	while (1) {
+		int new_x = curr_x - 1 + rand() % 2;
+		int new_y = curr_y - 1 + rand() % 2;
+		if (new_x >= 0 && new_x <= X_SIZE && new_y >= 0 && new_y < Y_SIZE) {
+			updateCell(&ocean[curr_y][curr_x], &ocean[new_y][new_x]);
+			return;
+		}
+	}
+}
+
 void moveToTheNearestTarget(OceanCell ocean[Y_SIZE][X_SIZE], int curr_x, int curr_y, int hunter, int target) {
 	
 	int radius = 1;
@@ -137,7 +153,7 @@ void moveToTheNearestTarget(OceanCell ocean[Y_SIZE][X_SIZE], int curr_x, int cur
 
 		for (int y = curr_y > radius ? curr_y - radius : 0; y <= curr_y + radius && y < Y_SIZE; y++) {
 			for (int x = curr_x > radius ? curr_x - radius : 0; x <= curr_x + radius && x < X_SIZE; x++) {
-				if (abs(y - curr_y) != radius && abs(x - curr_x) != radius) {
+				if (abs(y - curr_y) != radius && abs(curr_x - x) != radius) {
 					x = curr_x + radius - 1;
 				}
 				else if (ocean[y][x].alive == target) {
@@ -152,5 +168,6 @@ void moveToTheNearestTarget(OceanCell ocean[Y_SIZE][X_SIZE], int curr_x, int cur
 	}
 
 	if (hunter == target) return;
-	moveToTheNearestTarget(ocean, curr_x, curr_y, hunter, hunter);
+	//moveToTheNearestTarget(ocean, curr_x, curr_y, hunter, hunter);
+	randomMovement(ocean, curr_x, curr_y);
 }
