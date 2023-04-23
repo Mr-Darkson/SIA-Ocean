@@ -296,6 +296,9 @@ void moveToTheNearestTarget(OceanCell ocean[Y_SIZE][X_SIZE], int curr_x, int cur
 
 	while ((curr_x + radius < X_SIZE || curr_y + radius < Y_SIZE || curr_y - radius >= 0 || curr_x - radius >= 0) && radius <= radius_limit) {
 
+		int havchic[500][2];
+		int count_havchic = 0;
+
 		for (int y = curr_y > radius ? curr_y - radius : 0; y <= curr_y + radius && y < Y_SIZE; y++) {
 			for (int x = curr_x > radius ? curr_x - radius : 0; x <= curr_x + radius && x < X_SIZE; x++) {
 				if (abs(y - curr_y) != radius && abs(curr_x - x) != radius) {
@@ -307,17 +310,28 @@ void moveToTheNearestTarget(OceanCell ocean[Y_SIZE][X_SIZE], int curr_x, int cur
 					}
 				}
 				else if (ocean[y][x].alive == target) {
-					if (makeMoveIfEmpty(ocean, curr_x, curr_y, x, y, target)) {
-						return;
-					}
+					havchic[count_havchic][0] = x;
+					havchic[count_havchic][1] = y;
+					count_havchic++;
+				}
+			}
+
+		}
+
+		if (count_havchic > 0) {
+			int rand_start = rand() % count_havchic;
+			for (int i = (rand_start + 1) % count_havchic; i != rand_start; i = (i + 1) % count_havchic) {
+				if (makeMoveIfEmpty(ocean, curr_x, curr_y, havchic[i][0], havchic[i][1], target)) {
+					return;
 				}
 			}
 		}
+		
 
 		++radius;
 	}
 
-	if (hunter == target) return;
+	//if (hunter == target) return;
 	//moveToTheNearestTarget(ocean, curr_x, curr_y, hunter, hunter);
 	randomMovement(ocean, curr_x, curr_y, hunter);
 }
