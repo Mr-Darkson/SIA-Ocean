@@ -200,14 +200,17 @@ void spawnAnimal(OceanCell ocean[Y_SIZE][X_SIZE], int curr_x, int curr_y) {
 		if (ocean[curr_y][curr_x].fish.lifeTime < MATURE_FISH_AGE || ocean[curr_y][curr_x].fish.hunger >= FISH_BORN_HUNGER_LIMIT) 
 			return;
 		int bornChance = rand() % 100;
-		if (bornChance < CHANCE_FISH_BORN_FIVE) return;
+		if (bornChance < CHANCE_FISH_BORN_FIVE) {
+			ocean[curr_y][curr_x].fish.gaveBirth = 1;
+			return;
+		}
 
 		if (CHANCE_FISH_BORN_FIVE <= bornChance < CHANCE_FISH_BORN_THREE) {
 			for (int i = 0; i < 5; ++i) {
 				int new_x = curr_x - 1 + rand() % 3;
 				int new_y = curr_y - 1 + rand() % 3;
 				if (new_x >= 0 && new_x < X_SIZE && new_y >= 0 && new_y < Y_SIZE) {
-					if (ocean[new_y][new_x].alive >= ocean[curr_y][curr_x].alive) return;
+					if (ocean[new_y][new_x].alive >= ocean[curr_y][curr_x].alive) continue;
 					addAnimalInOcean(ocean, new_x, new_y, FISH);
 					ocean[curr_y][curr_x].fish.gaveBirth = 1;
 				}
@@ -220,7 +223,7 @@ void spawnAnimal(OceanCell ocean[Y_SIZE][X_SIZE], int curr_x, int curr_y) {
 				int new_x = curr_x - 1 + rand() % 3;
 				int new_y = curr_y - 1 + rand() % 3;
 				if (new_x >= 0 && new_x < X_SIZE && new_y >= 0 && new_y < Y_SIZE) {
-					if (ocean[new_y][new_x].alive >= ocean[curr_y][curr_x].alive) return;
+					if (ocean[new_y][new_x].alive >= ocean[curr_y][curr_x].alive) continue;
 					addAnimalInOcean(ocean, new_x, new_y, FISH);
 					ocean[curr_y][curr_x].fish.gaveBirth = 1;
 				}
@@ -244,14 +247,17 @@ void spawnAnimal(OceanCell ocean[Y_SIZE][X_SIZE], int curr_x, int curr_y) {
 		if (ocean[curr_y][curr_x].shark.lifeTime < MATURE_SHARK_AGE || ocean[curr_y][curr_x].shark.hunger >= SHARK_BORN_HUNGER_LIMIT) 
 			return;
 		int bornChance = rand() % 100;
-		if (bornChance < CHANCE_SHARK_BORN_TWINS) return;
+		if (bornChance < CHANCE_SHARK_BORN_TWINS) {
+			ocean[curr_y][curr_x].shark.gaveBirth = 1;
+			return;
+		}
 
 		if (CHANCE_SHARK_BORN_TWINS <= bornChance < CHANCE_FISH_BORN_ONE) {
 			for (int i = 0; i < 2; ++i) {
 				int new_x = curr_x - 1 + rand() % 3;
 				int new_y = curr_y - 1 + rand() % 3;
 				if (new_x >= 0 && new_x < X_SIZE && new_y >= 0 && new_y < Y_SIZE) {
-					if (ocean[new_y][new_x].alive >= ocean[curr_y][curr_x].alive) return;
+					if (ocean[new_y][new_x].alive >= ocean[curr_y][curr_x].alive) continue;
 					addAnimalInOcean(ocean, new_x, new_y, SHARK);
 					ocean[curr_y][curr_x].shark.gaveBirth = 1;
 				}
@@ -296,7 +302,11 @@ void moveToTheNearestTarget(OceanCell ocean[Y_SIZE][X_SIZE], int curr_x, int cur
 
 	while ((curr_x + radius < X_SIZE || curr_y + radius < Y_SIZE || curr_y - radius >= 0 || curr_x - radius >= 0) && radius <= radius_limit) {
 
-		int havchic[500][2];
+		int **havchic = calloc((2 * radius + 1) * 4 - 4, sizeof(int*));
+		for (int i = 0; i < (2 * radius + 1) * 4 - 4; i++) {
+			havchic[i] = calloc(2, sizeof(int));
+		}
+
 		int count_havchic = 0;
 
 		for (int y = curr_y > radius ? curr_y - radius : 0; y <= curr_y + radius && y < Y_SIZE; y++) {
