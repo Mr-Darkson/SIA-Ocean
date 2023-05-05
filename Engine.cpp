@@ -229,7 +229,7 @@ int runFromHunter(OceanCell ocean[Y_SIZE][X_SIZE], int curr_x, int curr_y, int f
 void moveToTheNearestTarget(OceanCell ocean[Y_SIZE][X_SIZE], int curr_x, int curr_y, int hunter, int target) {
 
 	int radius = 1;
-	int radius_limit = target == FISH ? FISH_VISION_RADIUS : SHARK_VISION_RADIUS;
+	int radius_limit = hunter == FISH ? FISH_VISION_RADIUS : SHARK_VISION_RADIUS;
 
 	while ((curr_x + radius < X_SIZE || curr_y + radius < Y_SIZE || curr_y - radius >= 0 || curr_x - radius >= 0) && radius <= radius_limit) {
 
