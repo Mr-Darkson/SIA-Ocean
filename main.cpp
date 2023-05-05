@@ -6,6 +6,9 @@
 #include <strsafe.h>
 #include "Environment.hpp"
 #include <sstream>
+#include <math.h>
+#include<cstdio>
+#include<ctime>
 
 using namespace sf;
 
@@ -13,7 +16,7 @@ Sprite plankton;
 Sprite fish;
 Sprite fish1;
 Sprite shark;
-Sprite shark1;
+//Sprite shark1;
 
 OceanCell ocean[Y_SIZE][X_SIZE];
 void fillOcean(OceanCell ocean[Y_SIZE][X_SIZE], Sprite plankton, Sprite fish, Sprite fish1, Sprite shark);
@@ -22,20 +25,48 @@ void spawnAnimal(OceanCell ocean[Y_SIZE][X_SIZE], int curr_x, int curr_y);
 void randomMovement(OceanCell ocean[Y_SIZE][X_SIZE], int curr_x, int curr_y, int walker);
 void moveToTheNearestTarget(OceanCell ocean[Y_SIZE][X_SIZE], int curr_x, int curr_y, int hunter, int target);
 
-void printOcean(RenderWindow* window, float time) {
-    
-    for (int y = 0; y < Y_SIZE; ++y) {
-        for (int x = 0; x < X_SIZE; ++x) {
-            if (ocean[y][x].type == EMPTY) continue;
-            Vector2f position;
-            position = ocean[y][x].sprite.getPosition();
-            position.x = (x * WINDOW_SIZE_X / X_SIZE - position.x) * time;
-            position.y = (y * WINDOW_SIZE_Y / Y_SIZE - position.y) * time;
-            ocean[y][x].sprite.move(position);
-            ocean[y][x].isChecked = 0;
-            window->draw(ocean[y][x].sprite);
+void printOcean(RenderWindow* window, float time, Sprite background) {
+    int flag = 0;
+    for (int k = 0; k < WINDOW_SIZE_X / X_SIZE; k++) {
+
+        for (int y = 0; y < Y_SIZE; ++y) {
+            for (int x = 0; x < X_SIZE; ++x) {
+                if (ocean[y][x].type == EMPTY) continue;
+                Vector2f position = ocean[y][x].sprite.getPosition();
+                float diffX = (x * WINDOW_SIZE_X / X_SIZE) - position.x;
+                float diffY = (y * WINDOW_SIZE_Y / Y_SIZE) - position.y;
+                //if (abs(diffX) >= 0.99 || abs(diffY) >= 0.99) {
+                //    if (abs(diffX) >= 0.99) {
+                //        //position.x = (diffX > 0 ? 1 : -1) * (WINDOW_SIZE_X / X_SIZE) * 0.2;
+                //        //position.x = (diffX > 0 ? 1 : -1);
+                        position.x = (diffX > 0 ? 1 : -1);
+                //        //position.x = diffX * (WINDOW_SIZE_X / X_SIZE) * time;
+                //    }
+                //    if (abs(diffY) >= 0.99) {
+                //        //position.y = (diffY > 0 ? 1 : -1);
+                //        //position.y = (diffY > 0 ? 1 : -1) * (WINDOW_SIZE_Y / Y_SIZE) * 0.2;
+                        position.y = (diffY > 0 ? 1 : -1) * ((WINDOW_SIZE_Y / Y_SIZE) / (WINDOW_SIZE_X / X_SIZE));
+                //        //position.y = diffY * (WINDOW_SIZE_Y / Y_SIZE) * time;
+                //    }
+                    
+                    ocean[y][x].sprite.move(position);
+                    ocean[y][x].isChecked = 0;
+            }
         }
+
+
+        window->clear();
+        window->draw(background);
+        for (int y = 0; y < Y_SIZE; ++y) {
+            for (int x = 0; x < X_SIZE; ++x) {
+                if (ocean[y][x].type == EMPTY) continue;
+                window->draw(ocean[y][x].sprite);
+            }
+        }
+
+        (*window).display();
     }
+    
 }
 
 void updateOcean() {
@@ -110,12 +141,13 @@ int main()
     shark.setTexture(sharkTexture);
     shark.scale(Vector2f(-SHARK_SPRITE_SCALE, SHARK_SPRITE_SCALE));
 
-    Texture shark1Texture;
+    /*Texture shark1Texture;
     shark1Texture.loadFromFile("images/shark1.png");
     shark1.setTexture(shark1Texture);
-    shark1.scale(Vector2f(SHARK1_SPRITE_SCALE, SHARK1_SPRITE_SCALE));
+    shark1.scale(Vector2f(SHARK1_SPRITE_SCALE, SHARK1_SPRITE_SCALE));*/
 
     fillOcean(ocean, plankton, fish, fish1, shark);
+    window.display();
 
     while (window.isOpen())
     {
@@ -136,8 +168,8 @@ int main()
         window.clear();
         window.draw(background);
 
-        printOcean(&window, fps);
         updateOcean();
+        printOcean(&window, fps, background);
 
         std::ostringstream gameTimeString;
         gameTimeString << printHours <<"h" << ":" << printMinutes << "m" << ":" << printSeconds << "s";
