@@ -17,7 +17,8 @@ Sprite fish;
 Sprite fish1;
 Sprite shark;
 Clock gameTimeClock;
-Text time;
+Text gameTime;
+int gameSeconds = 0;
 
 OceanCell ocean[Y_SIZE][X_SIZE];
 void fillOcean(OceanCell ocean[Y_SIZE][X_SIZE], Sprite plankton, Sprite fish, Sprite fish1, Sprite shark);
@@ -25,6 +26,19 @@ void checkFishStatus(OceanCell* cell);
 void spawnAnimal(OceanCell ocean[Y_SIZE][X_SIZE], int curr_x, int curr_y);
 void randomMovement(OceanCell ocean[Y_SIZE][X_SIZE], int curr_x, int curr_y, int walker);
 void moveToTheNearestTarget(OceanCell ocean[Y_SIZE][X_SIZE], int curr_x, int curr_y, int hunter, int target);
+
+void timePrint(RenderWindow *window) {
+    gameSeconds = gameTimeClock.getElapsedTime().asSeconds();
+    int printSeconds = gameSeconds % 60;
+    int printMinutes = gameSeconds / 60;
+    int printHours = gameSeconds / 3600;
+
+    std::ostringstream gameTimeString;
+    gameTimeString << printHours << "h" << ":" << printMinutes << "m" << ":" << printSeconds << "s";
+    gameTime.setString("Time: " + gameTimeString.str());
+    gameTime.setPosition(WINDOW_SIZE_X - 310, 5);
+    window->draw(gameTime);
+}
 
 void printOcean(RenderWindow* window, Sprite background) {
     int flag = 0;
@@ -65,7 +79,8 @@ void printOcean(RenderWindow* window, Sprite background) {
             }
         }
 
-        (*window).display();
+        timePrint(window);
+        window->display();
     }
     
 }
@@ -113,11 +128,10 @@ int main()
 
     Font font;
     font.loadFromFile("font/CyrilicOld.TTF");
-    Text text("", font, 40);
-    text.setFillColor(Color::Blue);
-    text.setStyle(Text::Bold);
-    int countDays = 0;
-    int gameSeconds = 0;
+    gameTime.setFont(font);
+    gameTime.setStyle(Text::Bold);
+    gameTime.setFillColor(Color::Blue);
+    gameTime.setCharacterSize(40);
 
     Texture planktonTexture;
     planktonTexture.loadFromFile("images/plankton.png");
@@ -144,11 +158,7 @@ int main()
 
     while (window.isOpen())
     {
-        gameSeconds = gameTimeClock.getElapsedTime().asSeconds();
-        int printSeconds = gameSeconds % 60;
-        int printMinutes = gameSeconds / 60;
-        int printHours = gameSeconds / 3600;
-
+       
         Event event;
         while (window.pollEvent(event))
         {
@@ -162,12 +172,7 @@ int main()
         updateOcean();
         printOcean(&window, background);
 
-        std::ostringstream gameTimeString;
-        gameTimeString << printHours <<"h" << ":" << printMinutes << "m" << ":" << printSeconds << "s";
-        text.setString("Time: " + gameTimeString.str());
-        text.setPosition(WINDOW_SIZE_X - 310, 5);
-        window.draw(text);
-
+        timePrint(&window);
         window.display();
         //Sleep(40);
         
