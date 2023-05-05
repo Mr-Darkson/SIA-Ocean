@@ -13,7 +13,6 @@ Sprite plankton;
 Sprite fish;
 Sprite fish1;
 Sprite shark;
-Sprite shark1;
 
 OceanCell ocean[Y_SIZE][X_SIZE];
 void fillOcean(OceanCell ocean[Y_SIZE][X_SIZE], Sprite plankton, Sprite fish, Sprite fish1, Sprite shark);
@@ -109,11 +108,6 @@ int main()
     sharkTexture.loadFromFile("images/shark.png");
     shark.setTexture(sharkTexture);
     shark.scale(Vector2f(-SHARK_SPRITE_SCALE, SHARK_SPRITE_SCALE));
-
-    Texture shark1Texture;
-    shark1Texture.loadFromFile("images/shark1.png");
-    shark1.setTexture(shark1Texture);
-    shark1.scale(Vector2f(SHARK1_SPRITE_SCALE, SHARK1_SPRITE_SCALE));
 
     fillOcean(ocean, plankton, fish, fish1, shark);
 
