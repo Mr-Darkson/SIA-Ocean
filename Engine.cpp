@@ -136,7 +136,7 @@ void spawnAnimal(OceanCell ocean[Y_SIZE][X_SIZE], int curr_x, int curr_y) {
 			return;
 		}
 
-		if (CHANCE_FISH_BORN_FIVE <= bornChance < CHANCE_FISH_BORN_THREE) {
+		if (CHANCE_FISH_BORN_FIVE <= bornChance && bornChance < CHANCE_FISH_BORN_THREE) {
 			for (int i = 0; i < 5; ++i) {
 				int new_x = curr_x - 1 + rand() % 3;
 				int new_y = curr_y - 1 + rand() % 3;
@@ -149,7 +149,7 @@ void spawnAnimal(OceanCell ocean[Y_SIZE][X_SIZE], int curr_x, int curr_y) {
 			return;
 		}
 
-		if (CHANCE_FISH_BORN_THREE <= bornChance < CHANCE_FISH_BORN_ONE) {
+		if (CHANCE_FISH_BORN_THREE <= bornChance && bornChance < CHANCE_FISH_BORN_ONE) {
 			for (int i = 0; i < 3; ++i) {
 				int new_x = curr_x - 1 + rand() % 3;
 				int new_y = curr_y - 1 + rand() % 3;
@@ -183,7 +183,7 @@ void spawnAnimal(OceanCell ocean[Y_SIZE][X_SIZE], int curr_x, int curr_y) {
 			return;
 		}
 
-		if (CHANCE_SHARK_BORN_TWINS <= bornChance < CHANCE_FISH_BORN_ONE) {
+		if (CHANCE_SHARK_BORN_TWINS <= bornChance && bornChance < CHANCE_FISH_BORN_ONE) {
 			for (int i = 0; i < 2; ++i) {
 				int new_x = curr_x - 1 + rand() % 3;
 				int new_y = curr_y - 1 + rand() % 3;
@@ -231,9 +231,9 @@ void moveToTheNearestTarget(OceanCell ocean[Y_SIZE][X_SIZE], int curr_x, int cur
 	int radius = 1;
 	int radius_limit = hunter == FISH ? FISH_VISION_RADIUS : SHARK_VISION_RADIUS;
 
-	if (hunter == SHARK) {
-		printf("in\n");
-	}
+	//if (hunter == SHARK) {
+	//	printf("in\n");
+	//}
 
 	while ((curr_x + radius < X_SIZE || curr_y + radius < Y_SIZE || curr_y - radius >= 0 || curr_x - radius >= 0) && radius <= radius_limit) {
 
@@ -275,8 +275,8 @@ void moveToTheNearestTarget(OceanCell ocean[Y_SIZE][X_SIZE], int curr_x, int cur
 		++radius;
 	}
 
-	if (hunter == SHARK) {
-		printf("out %d\n", radius);
-	}
+	//if (hunter == SHARK) {
+	//	printf("out %d\n", radius);
+	//}
 	randomMovement(ocean, curr_x, curr_y, hunter);
 }
