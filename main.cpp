@@ -55,7 +55,7 @@ void printOcean(RenderWindow* window, Sprite background) {
                 Vector2f position = ocean[y][x].sprite.getPosition();
                 float diffX = (x * WINDOW_SIZE_X / X_SIZE) - position.x;
                 float diffY = (y * WINDOW_SIZE_Y / Y_SIZE) - position.y;
-                if (ocean[y][x].type == SHARK) {
+                if (ocean[y][x].type == SHARK && (abs(diffX) > 0.9 || abs(diffY) > 0.9)) {
                     position.x = (diffX > 0 ? 2 : -2);
                     position.y = (diffY > 0 ? 2 : -2) * ((WINDOW_SIZE_Y / Y_SIZE) / (WINDOW_SIZE_X / X_SIZE));
                 }
