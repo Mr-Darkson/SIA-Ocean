@@ -55,8 +55,14 @@ void printOcean(RenderWindow* window, Sprite background) {
                 Vector2f position = ocean[y][x].sprite.getPosition();
                 float diffX = (x * WINDOW_SIZE_X / X_SIZE) - position.x;
                 float diffY = (y * WINDOW_SIZE_Y / Y_SIZE) - position.y;
-                position.x = (diffX > 0 ? 1 : -1);
-                position.y = (diffY > 0 ? 1 : -1) * ((WINDOW_SIZE_Y / Y_SIZE) / (WINDOW_SIZE_X / X_SIZE));
+                if (ocean[y][x].type == FISH) {
+                    position.x = (diffX > 0 ? 1 : -1);
+                    position.y = (diffY > 0 ? 1 : -1) * ((WINDOW_SIZE_Y / Y_SIZE) / (WINDOW_SIZE_X / X_SIZE));
+                }
+                if (ocean[y][x].type == SHARK) {
+                    position.x = (diffX > 0 ? 2 : -2);
+                    position.y = (diffY > 0 ? 2 : -2) * ((WINDOW_SIZE_Y / Y_SIZE) / (WINDOW_SIZE_X / X_SIZE));
+                }
                 
                 ocean[y][x].sprite.move(position);
                 ocean[y][x].isChecked = 0;
@@ -75,7 +81,6 @@ void printOcean(RenderWindow* window, Sprite background) {
         frameDelay(0.009);
         window->display();
     }
-    
 }
 
 void updateOcean() {
@@ -86,34 +91,27 @@ void updateOcean() {
             checkFishStatus(&ocean[i][j]);
             ++ocean[i][j].essense.lifeTime;
 
+            if (ocean[i][j].essense.gaveBirth == 0) {
+                spawnAnimal(ocean, j, i);
+            }
+
             if (ocean[i][j].type == PLANKTON) {
-                if (ocean[i][j].essense.gaveBirth == 0) {
-                    spawnAnimal(ocean, j, i);
-                }
-                //spawnAnimal(ocean, j, i);
                 randomMovement(ocean, j, i, PLANKTON);
                 ocean[i][j].isChecked = 1;
             }
 
             if (ocean[i][j].type == SHARK) {
-                if (ocean[i][j].essense.gaveBirth == 0) {
-                    spawnAnimal(ocean, j, i);
-                }
                 moveToTheNearestTarget(ocean, j, i, SHARK, FISH);
             }
 
             if (ocean[i][j].type == FISH) {
-                if (ocean[i][j].essense.gaveBirth == 0) {
-                    spawnAnimal(ocean, j, i);
-                }
                 moveToTheNearestTarget(ocean, j, i, FISH, PLANKTON);
             }
         }
     }
 }
 
-int main()
-{
+int main() {
     RenderWindow window(VideoMode(WINDOW_SIZE_X, WINDOW_SIZE_Y), "Aquarium");
 
     Texture backgroundTexture;
