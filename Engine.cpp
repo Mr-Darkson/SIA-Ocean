@@ -198,7 +198,7 @@ void spawnAnimal(OceanCell ocean[Y_SIZE][X_SIZE], int curr_x, int curr_y) {
 			return;
 		}
 
-		if (CHANCE_SHARK_BORN_TWINS <= bornChance && bornChance < CHANCE_FISH_BORN_ONE) {
+		if (CHANCE_SHARK_BORN_TWINS <= bornChance && bornChance < CHANCE_SHARK_BORN_ONE) {
 			for (int i = 0; i < 2; ++i) {
 				int new_x = curr_x - 1 + rand() % 3;
 				int new_y = curr_y - 1 + rand() % 3;
