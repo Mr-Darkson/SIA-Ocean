@@ -19,5 +19,6 @@ void generateSharks(OceanCell ocean[Y_SIZE][X_SIZE], sf::Sprite shark) {
 		ocean[y][x].essense.gaveBirth = 0;
 		ocean[y][x].essense.lifeTime = 0;
 		ocean[y][x].sprite = shark;
+		ocean[y][x].sprite.setPosition(x * WINDOW_SIZE_X / X_SIZE, y * WINDOW_SIZE_Y / Y_SIZE);
 	}
 }

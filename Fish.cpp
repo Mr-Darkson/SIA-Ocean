@@ -18,5 +18,6 @@ void generateFish(OceanCell ocean[Y_SIZE][X_SIZE], sf::Sprite fish, sf::Sprite f
 		ocean[y][x].essense.gaveBirth = 0;
 		ocean[y][x].essense.lifeTime = 0;
 		ocean[y][x].sprite = sprite == 0 ? fish : fish1;
+		ocean[y][x].sprite.setPosition(x * WINDOW_SIZE_X / X_SIZE, y * WINDOW_SIZE_Y / Y_SIZE);
 	}
 }

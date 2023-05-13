@@ -26,6 +26,12 @@ void checkFishStatus(OceanCell* cell);
 void spawnAnimal(OceanCell ocean[Y_SIZE][X_SIZE], int curr_x, int curr_y);
 void randomMovement(OceanCell ocean[Y_SIZE][X_SIZE], int curr_x, int curr_y, int walker);
 void moveToTheNearestTarget(OceanCell ocean[Y_SIZE][X_SIZE], int curr_x, int curr_y, int hunter, int target);
+void invertScale(OceanCell* cell);
+
+void frameDelay(float delay) {
+    Clock time;
+    while (time.getElapsedTime().asSeconds() < delay);
+}
 
 void timePrint(RenderWindow *window) {
     gameSeconds = gameTimeClock.getElapsedTime().asSeconds();
@@ -41,7 +47,6 @@ void timePrint(RenderWindow *window) {
 }
 
 void printOcean(RenderWindow* window, Sprite background) {
-    int flag = 0;
     for (int k = 0; k < WINDOW_SIZE_X / X_SIZE; k++) {
 
         for (int y = 0; y < Y_SIZE; ++y) {
@@ -50,27 +55,14 @@ void printOcean(RenderWindow* window, Sprite background) {
                 Vector2f position = ocean[y][x].sprite.getPosition();
                 float diffX = (x * WINDOW_SIZE_X / X_SIZE) - position.x;
                 float diffY = (y * WINDOW_SIZE_Y / Y_SIZE) - position.y;
-                //if (abs(diffX) >= 0.99 || abs(diffY) >= 0.99) {
-                //    if (abs(diffX) >= 0.99) {
-                //        //position.x = (diffX > 0 ? 1 : -1) * (WINDOW_SIZE_X / X_SIZE) * 0.2;
-                //        //position.x = (diffX > 0 ? 1 : -1);
-                        position.x = (diffX > 0 ? 1 : -1);
-                //        //position.x = diffX * (WINDOW_SIZE_X / X_SIZE) * time;
-                //    }
-                //    if (abs(diffY) >= 0.99) {
-                //        //position.y = (diffY > 0 ? 1 : -1);
-                //        //position.y = (diffY > 0 ? 1 : -1) * (WINDOW_SIZE_Y / Y_SIZE) * 0.2;
-                        position.y = (diffY > 0 ? 1 : -1) * ((WINDOW_SIZE_Y / Y_SIZE) / (WINDOW_SIZE_X / X_SIZE));
-                //        //position.y = diffY * (WINDOW_SIZE_Y / Y_SIZE) * time;
-                //    }
-                    
-                    ocean[y][x].sprite.move(position);
-                    ocean[y][x].isChecked = 0;
+                position.x = (diffX > 0 ? 1 : -1);
+                position.y = (diffY > 0 ? 1 : -1) * ((WINDOW_SIZE_Y / Y_SIZE) / (WINDOW_SIZE_X / X_SIZE));
+                
+                ocean[y][x].sprite.move(position);
+                ocean[y][x].isChecked = 0;
             }
         }
 
-
-        window->clear();
         window->draw(background);
         for (int y = 0; y < Y_SIZE; ++y) {
             for (int x = 0; x < X_SIZE; ++x) {
@@ -80,6 +72,7 @@ void printOcean(RenderWindow* window, Sprite background) {
         }
 
         timePrint(window);
+        frameDelay(0.009);
         window->display();
     }
     
@@ -91,15 +84,18 @@ void updateOcean() {
             if (ocean[i][j].isChecked || ocean[i][j].type == EMPTY) continue;
 
             checkFishStatus(&ocean[i][j]);
+            ++ocean[i][j].essense.lifeTime;
 
             if (ocean[i][j].type == PLANKTON) {
-                spawnAnimal(ocean, j, i);
+                if (ocean[i][j].essense.gaveBirth == 0) {
+                    spawnAnimal(ocean, j, i);
+                }
+                //spawnAnimal(ocean, j, i);
                 randomMovement(ocean, j, i, PLANKTON);
                 ocean[i][j].isChecked = 1;
             }
 
             if (ocean[i][j].type == SHARK) {
-                ++ocean[i][j].essense.lifeTime;
                 if (ocean[i][j].essense.gaveBirth == 0) {
                     spawnAnimal(ocean, j, i);
                 }
@@ -107,7 +103,6 @@ void updateOcean() {
             }
 
             if (ocean[i][j].type == FISH) {
-                ++ocean[i][j].essense.lifeTime;
                 if (ocean[i][j].essense.gaveBirth == 0) {
                     spawnAnimal(ocean, j, i);
                 }
@@ -151,17 +146,14 @@ int main()
     Texture sharkTexture;
     sharkTexture.loadFromFile("images/shark.png");
     shark.setTexture(sharkTexture);
-    shark.scale(Vector2f(-SHARK_SPRITE_SCALE, SHARK_SPRITE_SCALE));
+    shark.scale(Vector2f(SHARK_SPRITE_SCALE, SHARK_SPRITE_SCALE));
 
     fillOcean(ocean, plankton, fish, fish1, shark);
-    window.display();
 
-    while (window.isOpen())
-    {
+    while (window.isOpen()) {
        
         Event event;
-        while (window.pollEvent(event))
-        {
+        while (window.pollEvent(event)) {
             if (event.type == Event::Closed)
                 window.close();
         }
@@ -171,11 +163,6 @@ int main()
 
         updateOcean();
         printOcean(&window, background);
-
-        timePrint(&window);
-        window.display();
-        //Sleep(40);
-        
     }
 
     return 0;

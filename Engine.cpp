@@ -10,6 +10,10 @@ void generatePlancton(OceanCell[Y_SIZE][X_SIZE], sf::Sprite);
 void generateSharks(OceanCell[Y_SIZE][X_SIZE], sf::Sprite);
 void generateFish(OceanCell ocean[Y_SIZE][X_SIZE], sf::Sprite, sf::Sprite);
 
+void invertScale(OceanCell* cell) {
+	cell->sprite.setScale(-cell->sprite.getScale().x, cell->sprite.getScale().y);
+}
+
 void fillOcean(OceanCell ocean[Y_SIZE][X_SIZE], sf::Sprite plankton, sf::Sprite fish, sf::Sprite fish1, sf::Sprite shark) {
 	for (int y = 0; y < Y_SIZE; y++) {
 		for (int x = 0; x < X_SIZE; x++) {
@@ -25,7 +29,6 @@ void fillOcean(OceanCell ocean[Y_SIZE][X_SIZE], sf::Sprite plankton, sf::Sprite 
 }
 
 void updateCell(OceanCell* oldCell, OceanCell* newCell) {
-
 	if (oldCell->type == PLANKTON) {
 		newCell->type = PLANKTON;
 	}
@@ -60,7 +63,6 @@ void updateCell(OceanCell* oldCell, OceanCell* newCell) {
 }
 
 void checkFishStatus(OceanCell* cell) {
-
 	if (cell->type == SHARK) {
 		if (cell->essense.hunger > SHARK_HUNGER || cell->essense.lifeTime > SHARK_LIFETIME) {
 			cell->type = EMPTY;
@@ -81,7 +83,6 @@ void checkFishStatus(OceanCell* cell) {
 }
 
 int makeMoveIfEmpty(OceanCell ocean[Y_SIZE][X_SIZE], int curr_x, int curr_y, int targ_x, int targ_y, int target) {
-
 	int y_diff = targ_y - curr_y;
 	int x_diff = targ_x - curr_x;
 	int next_y = curr_y + (y_diff / (abs(y_diff) ? abs(y_diff) : 1));
@@ -116,7 +117,9 @@ void spawnAnimal(OceanCell ocean[Y_SIZE][X_SIZE], int curr_x, int curr_y) {
 
 	if (ocean[curr_y][curr_x].type == PLANKTON) {
 		int chance = rand() % 2;
-		if (chance == 0) return;
+		if (chance == 0) {
+			return;
+		}
 
 		int new_x = curr_x - 1 + rand() % 3;
 		int new_y = curr_y - 1 + rand() % 3;
@@ -231,10 +234,6 @@ void moveToTheNearestTarget(OceanCell ocean[Y_SIZE][X_SIZE], int curr_x, int cur
 	int radius = 1;
 	int radius_limit = hunter == FISH ? FISH_VISION_RADIUS : SHARK_VISION_RADIUS;
 
-	//if (hunter == SHARK) {
-	//	printf("in\n");
-	//}
-
 	while ((curr_x + radius < X_SIZE || curr_y + radius < Y_SIZE || curr_y - radius >= 0 || curr_x - radius >= 0) && radius <= radius_limit) {
 
 		int havchic[500][2];
@@ -275,8 +274,5 @@ void moveToTheNearestTarget(OceanCell ocean[Y_SIZE][X_SIZE], int curr_x, int cur
 		++radius;
 	}
 
-	//if (hunter == SHARK) {
-	//	printf("out %d\n", radius);
-	//}
 	randomMovement(ocean, curr_x, curr_y, hunter);
 }
