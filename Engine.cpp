@@ -83,10 +83,22 @@ void checkFishStatus(OceanCell* cell) {
 }
 
 int makeMoveIfEmpty(OceanCell ocean[Y_SIZE][X_SIZE], int curr_x, int curr_y, int targ_x, int targ_y, int target) {
-	int y_diff = targ_y - curr_y;
-	int x_diff = targ_x - curr_x;
-	int next_y = curr_y + (y_diff / (abs(y_diff) ? abs(y_diff) : 1));
-	int next_x = curr_x + (x_diff / (abs(x_diff) ? abs(x_diff) : 1));
+
+	int next_y;
+	int next_x;
+
+	if (ocean[curr_y][curr_x].type == SHARK) {
+		int y_diff = targ_y - curr_y;
+		int x_diff = targ_x - curr_x;
+		next_y = curr_y + (y_diff / (abs(y_diff) ? abs(y_diff) : 1)) * (abs(y_diff) >= 2 ? 2 : 1);
+		next_x = curr_x + (x_diff / (abs(x_diff) ? abs(x_diff) : 1)) * (abs(x_diff) >= 2 ? 2 : 1);
+	}
+	else {
+		int y_diff = targ_y - curr_y;
+		int x_diff = targ_x - curr_x;
+		next_y = curr_y + (y_diff / (abs(y_diff) ? abs(y_diff) : 1));
+		next_x = curr_x + (x_diff / (abs(x_diff) ? abs(x_diff) : 1));
+	}
 
 	if (ocean[next_y][next_x].type <= target) {
 		updateCell(&ocean[curr_y][curr_x], &ocean[next_y][next_x]);
