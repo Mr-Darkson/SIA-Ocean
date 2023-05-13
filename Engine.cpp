@@ -108,11 +108,11 @@ int makeMoveIfEmpty(OceanCell ocean[Y_SIZE][X_SIZE], int curr_x, int curr_y, int
 	return 0;
 }
 
-void randomMovement(OceanCell ocean[Y_SIZE][X_SIZE], int curr_x, int curr_y, int walker) {
+void randomMovement(OceanCell ocean[Y_SIZE][X_SIZE], int curr_x, int curr_y) {
 	int new_x = curr_x - 1 + rand() % 3;
 	int new_y = curr_y - 1 + rand() % 3;
 	if (new_x >= 0 && new_x < X_SIZE && new_y >= 0 && new_y < Y_SIZE) {
-		if (ocean[new_y][new_x].type >= walker) return;
+		if (ocean[new_y][new_x].type >= ocean[curr_y][curr_x].type) return;
 		updateCell(&ocean[curr_y][curr_x], &ocean[new_y][new_x]);
 	}
 }
@@ -286,5 +286,5 @@ void moveToTheNearestTarget(OceanCell ocean[Y_SIZE][X_SIZE], int curr_x, int cur
 		++radius;
 	}
 
-	randomMovement(ocean, curr_x, curr_y, hunter);
+	randomMovement(ocean, curr_x, curr_y);
 }

@@ -24,8 +24,8 @@ OceanCell ocean[Y_SIZE][X_SIZE];
 void fillOcean(OceanCell ocean[Y_SIZE][X_SIZE], Sprite plankton, Sprite fish, Sprite fish1, Sprite shark);
 void checkFishStatus(OceanCell* cell);
 void spawnAnimal(OceanCell ocean[Y_SIZE][X_SIZE], int curr_x, int curr_y);
-void randomMovement(OceanCell ocean[Y_SIZE][X_SIZE], int curr_x, int curr_y, int walker);
 void moveToTheNearestTarget(OceanCell ocean[Y_SIZE][X_SIZE], int curr_x, int curr_y, int hunter, int target);
+void randomMovement(OceanCell ocean[Y_SIZE][X_SIZE], int curr_x, int curr_y);
 void invertScale(OceanCell* cell);
 
 void frameDelay(float delay) {
@@ -55,14 +55,15 @@ void printOcean(RenderWindow* window, Sprite background) {
                 Vector2f position = ocean[y][x].sprite.getPosition();
                 float diffX = (x * WINDOW_SIZE_X / X_SIZE) - position.x;
                 float diffY = (y * WINDOW_SIZE_Y / Y_SIZE) - position.y;
-                if (ocean[y][x].type == FISH) {
-                    position.x = (diffX > 0 ? 1 : -1);
-                    position.y = (diffY > 0 ? 1 : -1) * ((WINDOW_SIZE_Y / Y_SIZE) / (WINDOW_SIZE_X / X_SIZE));
-                }
                 if (ocean[y][x].type == SHARK) {
                     position.x = (diffX > 0 ? 2 : -2);
                     position.y = (diffY > 0 ? 2 : -2) * ((WINDOW_SIZE_Y / Y_SIZE) / (WINDOW_SIZE_X / X_SIZE));
                 }
+                else {
+                    position.x = (diffX > 0 ? 1 : -1);
+                    position.y = (diffY > 0 ? 1 : -1) * ((WINDOW_SIZE_Y / Y_SIZE) / (WINDOW_SIZE_X / X_SIZE));
+                }
+                
                 
                 ocean[y][x].sprite.move(position);
                 ocean[y][x].isChecked = 0;
@@ -96,7 +97,7 @@ void updateOcean() {
             }
 
             if (ocean[i][j].type == PLANKTON) {
-                randomMovement(ocean, j, i, PLANKTON);
+                randomMovement(ocean, j, i);
                 ocean[i][j].isChecked = 1;
             }
 
