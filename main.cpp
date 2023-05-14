@@ -55,44 +55,30 @@ void printOcean(RenderWindow* window, Sprite background) {
                 Vector2f position = ocean[y][x].sprite.getPosition();
                 float diffX = (x * WINDOW_SIZE_X / X_SIZE) - position.x;
                 float diffY = (y * WINDOW_SIZE_Y / Y_SIZE) - position.y;
-                if (ocean[y][x].type == SHARK && (abs(diffX) > 1 || abs(diffY) > 1)) {
-                    if (abs(diffX) > 1) {
+                position.x = 0;
+                position.y = 0;
+                if (ocean[y][x].type == SHARK) {
+                    if (abs(diffX) > 1.9) {
                         position.x = (diffX > 0 ? 2 : -2);
                     }
-                    else {
-                        if (abs(diffX) < 0.1) {
-                            position.x = 0;
-                        }
-                        else {
-                            position.x = (diffX > 0 ? 1 : -1);
-                        }
+                    else if (abs(diffX) > 0.1) {
+                        position.x = diffX;
                     }
 
-                    if (abs(diffY) > 1) {
-                        position.y = (diffY > 0 ? 2 : -2) * ((WINDOW_SIZE_Y / Y_SIZE) / (WINDOW_SIZE_X / (double)X_SIZE));
+                    if (abs(diffY) > 1.9) {
+                        position.y = (diffY > 0 ? 2 : -2) * ((WINDOW_SIZE_Y / Y_SIZE) / (((float)WINDOW_SIZE_X) / X_SIZE));
                     }
-                    else {
-                        if (abs(diffY) < 0.1) {
-                            position.y = 0;
-                        }
-                        else {
-                            position.y = (diffY > 0 ? 1 : -1) * ((WINDOW_SIZE_Y / Y_SIZE) / (WINDOW_SIZE_X / X_SIZE));
-                        }
+                    else if (abs(diffY) > 0.1) {
+                        position.y = diffY;
                     }
                 }
                 else {
-                    if (abs(diffX) < 0.1) {
-                        position.x = 0;
-                    }
-                    else {
+                    if (abs(diffX) > 0.1) {
                         position.x = (diffX > 0 ? 1 : -1);
                     }
 
-                    if (abs(diffY) < 0.1) {
-                        position.y = 0;
-                    }
-                    else {
-                        position.y = (diffY > 0 ? 1 : -1) * ((WINDOW_SIZE_Y / Y_SIZE) / (WINDOW_SIZE_X / X_SIZE));
+                    if (abs(diffY) > 0.1) {
+                        position.y = (diffY > 0 ? 1 : -1) * ((WINDOW_SIZE_Y / Y_SIZE) / (((float)WINDOW_SIZE_X) / X_SIZE));
                     }
                 }
                 
@@ -111,7 +97,7 @@ void printOcean(RenderWindow* window, Sprite background) {
         }
 
         timePrint(window);
-        frameDelay(0.009);
+        frameDelay(0.01);
         window->display();
     }
 }
