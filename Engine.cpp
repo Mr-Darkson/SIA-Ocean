@@ -34,8 +34,8 @@ void updateCell(OceanCell* oldCell, OceanCell* newCell) {
 	}
 
 	if (oldCell->type == SHARK) {
-		if (newCell->type >= FISH && oldCell->essense.hunger >= SHARK_HUNGER / 5) {
-			oldCell->essense.hunger -= SHARK_HUNGER / 20;
+		if (newCell->type >= FISH) {
+			oldCell->essense.hunger -= SHARK_HUNGER / 10;
 		}
 		else {
 			++oldCell->essense.hunger;
@@ -245,7 +245,7 @@ void moveToTheNearestTarget(OceanCell ocean[Y_SIZE][X_SIZE], int curr_x, int cur
 
 	OceanCell entity = ocean[curr_y][curr_x];
 	if (entity.type == SHARK) {
-		if (entity.essense.hunger < (SHARK_HUNGER / 5)) {
+		if (entity.essense.hunger <= 0) {
 			randomMovement(ocean, curr_x, curr_y);
 			return;
 		}
