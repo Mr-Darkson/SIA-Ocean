@@ -34,8 +34,8 @@ void updateCell(OceanCell* oldCell, OceanCell* newCell) {
 	}
 
 	if (oldCell->type == SHARK) {
-		if (newCell->type >= FISH) {
-			oldCell->essense.hunger = 0;
+		if (newCell->type >= FISH && oldCell->essense.hunger >= SHARK_HUNGER / 5) {
+			oldCell->essense.hunger -= SHARK_HUNGER / 20;
 		}
 		else {
 			++oldCell->essense.hunger;
@@ -243,8 +243,32 @@ int runFromHunter(OceanCell ocean[Y_SIZE][X_SIZE], int curr_x, int curr_y, int f
 
 void moveToTheNearestTarget(OceanCell ocean[Y_SIZE][X_SIZE], int curr_x, int curr_y, int hunter, int target) {
 
+	OceanCell entity = ocean[curr_y][curr_x];
+	if (entity.type == SHARK) {
+		if (entity.essense.hunger < (SHARK_HUNGER / 5)) {
+			randomMovement(ocean, curr_x, curr_y);
+			return;
+		}
+	}
+
 	int radius = 1;
 	int radius_limit = hunter == FISH ? FISH_VISION_RADIUS : SHARK_VISION_RADIUS;
+
+	while ((curr_x + radius < X_SIZE || curr_y + radius < Y_SIZE || curr_y - radius >= 0 || curr_x - radius >= 0) && radius <= (radius_limit)) {
+		for (int y = curr_y > radius ? curr_y - radius : 0; y <= curr_y + radius && y < Y_SIZE; y++) {
+			for (int x = curr_x > radius ? curr_x - radius : 0; x <= curr_x + radius && x < X_SIZE; x++) {
+				if (ocean[y][x].type > hunter) {
+					if (runFromHunter(ocean, curr_x, curr_y, x, y, target)) {
+						return;
+					}
+				}
+			}
+		}
+
+		++radius;
+	}
+
+	radius = 1;
 
 	while ((curr_x + radius < X_SIZE || curr_y + radius < Y_SIZE || curr_y - radius >= 0 || curr_x - radius >= 0) && radius <= radius_limit) {
 
@@ -267,7 +291,6 @@ void moveToTheNearestTarget(OceanCell ocean[Y_SIZE][X_SIZE], int curr_x, int cur
 					count_havchic++;
 				}
 			}
-
 		}
 
 		if (count_havchic > 0) {

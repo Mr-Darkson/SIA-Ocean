@@ -97,7 +97,7 @@ void printOcean(RenderWindow* window, Sprite background) {
         }
 
         timePrint(window);
-        frameDelay(0.01);
+        frameDelay(0.003);
         window->display();
     }
 }
